@@ -12,9 +12,9 @@ class UWorld;
 //////////////////////////////////////////////////////////////////////////
 
 FAutoConsoleCommandWithWorldArgsAndOutputDevice GDiffCollectionReferenceSupport(
-	TEXT("Lyra.DiffCollectionReferenceSupport"),
+	TEXT("Otter.DiffCollectionReferenceSupport"),
 	TEXT("Usage:\n")
-	TEXT("  Lyra.DiffCollectionReferenceSupport OldCollectionName NewCollectionName [Deduplicate]\n")
+	TEXT("  Otter.DiffCollectionReferenceSupport OldCollectionName NewCollectionName [Deduplicate]\n")
 	TEXT("\n")
 	TEXT("It will list the assets in Old that 'support' assets introduced in New (are referencers directly/indirectly)\n")
 	TEXT("as well as any loose unsupported assets.\n")

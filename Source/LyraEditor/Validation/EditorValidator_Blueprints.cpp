@@ -5,7 +5,7 @@
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Blueprint/BlueprintSupport.h"
 #include "Kismet2/BlueprintEditorUtils.h"
-#include "LyraEditor.h"
+#include "OtterEditor.h"
 #include "Modules/ModuleManager.h"
 #include "Validation/EditorValidator.h"
 #include "Validation/EditorValidator_Load.h"
@@ -87,7 +87,7 @@ EDataValidationResult UEditorValidator_Blueprints::ValidateLoadedAsset_Implement
 							{
 								if (!bIsDataOnlyBP)
 								{
-									UE_LOG(LogLyraEditor, Display, TEXT("    Loading referencing non-dataonly blueprint %s"), *HardReferencerStr);
+									UE_LOG(LogOtterEditor, Display, TEXT("    Loading referencing non-dataonly blueprint %s"), *HardReferencerStr);
 
 									TArray<FString> WarningsAndErrors;
 									if (UEditorValidator_Load::GetLoadWarningsAndErrorsForPackage(HardReferencerStr, WarningsAndErrors))

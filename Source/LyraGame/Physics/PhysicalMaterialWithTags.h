@@ -10,7 +10,7 @@
 class UObject;
 
 /**
- * ULyraWeaponInstance
+ * UOtterWeaponInstance
  *
  * A piece of equipment representing a weapon spawned and applied to a pawn
  */

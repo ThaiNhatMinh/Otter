@@ -12,9 +12,9 @@
 template <typename InterfaceType> class TScriptInterface;
 
 class AActor;
-class ULyraInventoryItemDefinition;
-class ULyraInventoryItemInstance;
-class ULyraInventoryManagerComponent;
+class UOtterInventoryItemDefinition;
+class UOtterInventoryItemInstance;
+class UOtterInventoryManagerComponent;
 class UObject;
 struct FFrame;
 
@@ -28,7 +28,7 @@ public:
 	int32 StackCount = 1;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<ULyraInventoryItemDefinition> ItemDef;
+	TSubclassOf<UOtterInventoryItemDefinition> ItemDef;
 };
 
 USTRUCT(BlueprintType)
@@ -38,7 +38,7 @@ struct FPickupInstance
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TObjectPtr<ULyraInventoryItemInstance> Item = nullptr;
+	TObjectPtr<UOtterInventoryItemInstance> Item = nullptr;
 };
 
 USTRUCT(BlueprintType)
@@ -85,5 +85,5 @@ public:
 	static TScriptInterface<IPickupable> GetFirstPickupableFromActor(AActor* Actor);
 
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, meta = (WorldContext = "Ability"))
-	static void AddPickupToInventory(ULyraInventoryManagerComponent* InventoryComponent, TScriptInterface<IPickupable> Pickup);
+	static void AddPickupToInventory(UOtterInventoryManagerComponent* InventoryComponent, TScriptInterface<IPickupable> Pickup);
 };

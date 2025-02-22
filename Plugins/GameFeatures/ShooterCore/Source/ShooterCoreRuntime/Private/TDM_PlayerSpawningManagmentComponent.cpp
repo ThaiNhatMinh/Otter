@@ -4,9 +4,9 @@
 
 #include "Engine/World.h"
 #include "GameFramework/PlayerState.h"
-#include "GameModes/LyraGameState.h"
-#include "Player/LyraPlayerStart.h"
-#include "Teams/LyraTeamSubsystem.h"
+#include "GameModes/OtterGameState.h"
+#include "Player/OtterPlayerStart.h"
+#include "Teams/OtterTeamSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TDM_PlayerSpawningManagmentComponent)
 
@@ -17,9 +17,9 @@ UTDM_PlayerSpawningManagmentComponent::UTDM_PlayerSpawningManagmentComponent(con
 {
 }
 
-AActor* UTDM_PlayerSpawningManagmentComponent::OnChoosePlayerStart(AController* Player, TArray<ALyraPlayerStart*>& PlayerStarts)
+AActor* UTDM_PlayerSpawningManagmentComponent::OnChoosePlayerStart(AController* Player, TArray<AOtterPlayerStart*>& PlayerStarts)
 {
-	ULyraTeamSubsystem* TeamSubsystem = GetWorld()->GetSubsystem<ULyraTeamSubsystem>();
+	UOtterTeamSubsystem* TeamSubsystem = GetWorld()->GetSubsystem<UOtterTeamSubsystem>();
 	if (!ensure(TeamSubsystem))
 	{
 		return nullptr;
@@ -33,11 +33,11 @@ AActor* UTDM_PlayerSpawningManagmentComponent::OnChoosePlayerStart(AController* 
 		return nullptr;
 	}
 
-	ALyraGameState* GameState = GetGameStateChecked<ALyraGameState>();
+	AOtterGameState* GameState = GetGameStateChecked<AOtterGameState>();
 
-	ALyraPlayerStart* BestPlayerStart = nullptr;
+	AOtterPlayerStart* BestPlayerStart = nullptr;
 	double MaxDistance = 0;
-	ALyraPlayerStart* FallbackPlayerStart = nullptr;
+	AOtterPlayerStart* FallbackPlayerStart = nullptr;
 	double FallbackMaxDistance = 0;
 
 	for (APlayerState* PS : GameState->PlayerArray)
@@ -53,7 +53,7 @@ AActor* UTDM_PlayerSpawningManagmentComponent::OnChoosePlayerStart(AController* 
 		// If the other player isn't on the same team, lets find the furthest spawn from them.
 		if (TeamId != PlayerTeamId)
 		{
-			for (ALyraPlayerStart* PlayerStart : PlayerStarts)
+			for (AOtterPlayerStart* PlayerStart : PlayerStarts)
 			{
 				if (APawn* Pawn = PS->GetPawn())
 				{
@@ -67,7 +67,7 @@ AActor* UTDM_PlayerSpawningManagmentComponent::OnChoosePlayerStart(AController* 
 							FallbackMaxDistance = Distance;
 						}
 					}
-					else if (PlayerStart->GetLocationOccupancy(Player) < ELyraPlayerStartLocationOccupancy::Full)
+					else if (PlayerStart->GetLocationOccupancy(Player) < EOtterPlayerStartLocationOccupancy::Full)
 					{
 						if (BestPlayerStart == nullptr || Distance > MaxDistance)
 						{

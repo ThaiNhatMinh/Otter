@@ -98,8 +98,8 @@ bool UEditorValidator_Load::GetLoadWarningsAndErrorsForPackage(const FString& Pa
 				// Gather all warnings and errors during the process to determine return value
 				UPackage* LoadedPackage = nullptr;
 				{
-					FLyraValidationMessageGatherer::AddIgnorePatterns(InMemoryReloadLogIgnoreList);
-					FLyraValidationMessageGatherer ScopedMessageGatherer;
+					FOtterValidationMessageGatherer::AddIgnorePatterns(InMemoryReloadLogIgnoreList);
+					FOtterValidationMessageGatherer ScopedMessageGatherer;
 					// If we are loading a blueprint, compile the original and load the duplicate with DisableCompileOnLoad, since BPs loaded on the side may not compile if there are circular references involving self
 					int32 LoadFlags = LOAD_ForDiff;
 					{
@@ -136,7 +136,7 @@ bool UEditorValidator_Load::GetLoadWarningsAndErrorsForPackage(const FString& Pa
 						SanitizedMessage = SanitizedMessage.Replace(*DestPackageName, *SrcPackageName);
 						OutWarningsAndErrors.Add(SanitizedMessage);
 					}
-					FLyraValidationMessageGatherer::RemoveIgnorePatterns(InMemoryReloadLogIgnoreList);
+					FOtterValidationMessageGatherer::RemoveIgnorePatterns(InMemoryReloadLogIgnoreList);
 				}
 				if (LoadedPackage)
 				{
@@ -176,7 +176,7 @@ bool UEditorValidator_Load::GetLoadWarningsAndErrorsForPackage(const FString& Pa
 	else
 	{
 		// Not in memory, just load it
-		FLyraValidationMessageGatherer ScopedMessageGatherer;
+		FOtterValidationMessageGatherer ScopedMessageGatherer;
 		LoadPackage(nullptr, *PackageName, LOAD_None);
 		OutWarningsAndErrors = ScopedMessageGatherer.GetAllWarningsAndErrors();
 	}

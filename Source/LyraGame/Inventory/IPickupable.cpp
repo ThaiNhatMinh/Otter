@@ -3,7 +3,7 @@
 #include "IPickupable.h"
 
 #include "GameFramework/Actor.h"
-#include "LyraInventoryManagerComponent.h"
+#include "OtterInventoryManagerComponent.h"
 #include "UObject/ScriptInterface.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(IPickupable)
@@ -35,7 +35,7 @@ TScriptInterface<IPickupable> UPickupableStatics::GetFirstPickupableFromActor(AA
 	return TScriptInterface<IPickupable>();
 }
 
-void UPickupableStatics::AddPickupToInventory(ULyraInventoryManagerComponent* InventoryComponent, TScriptInterface<IPickupable> Pickup)
+void UPickupableStatics::AddPickupToInventory(UOtterInventoryManagerComponent* InventoryComponent, TScriptInterface<IPickupable> Pickup)
 {
 	if (InventoryComponent && Pickup)
 	{

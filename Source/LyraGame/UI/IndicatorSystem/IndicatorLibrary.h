@@ -7,7 +7,7 @@
 #include "IndicatorLibrary.generated.h"
 
 class AController;
-class ULyraIndicatorManagerComponent;
+class UOtterIndicatorManagerComponent;
 class UObject;
 struct FFrame;
 
@@ -21,5 +21,5 @@ public:
 	
 	/**  */
 	UFUNCTION(BlueprintCallable, Category = Indicator)
-	static ULyraIndicatorManagerComponent* GetIndicatorManagerComponent(AController* Controller);
+	static UOtterIndicatorManagerComponent* GetIndicatorManagerComponent(AController* Controller);
 };

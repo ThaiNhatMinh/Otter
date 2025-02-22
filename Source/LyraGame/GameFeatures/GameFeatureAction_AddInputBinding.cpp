@@ -8,9 +8,9 @@
 #include "GameFramework/Pawn.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
-#include "Character/LyraHeroComponent.h"
+#include "Character/OtterHeroComponent.h"
 #include "GameFeatures/GameFeatureAction_WorldActionBase.h"
-#include "Input/LyraInputConfig.h"
+#include "Input/OtterInputConfig.h"
 
 #if WITH_EDITOR
 #include "Misc/DataValidation.h"
@@ -52,7 +52,7 @@ EDataValidationResult UGameFeatureAction_AddInputBinding::IsDataValid(FDataValid
 
 	int32 Index = 0;
 
-	for (const TSoftObjectPtr<const ULyraInputConfig>& Entry : InputConfigs)
+	for (const TSoftObjectPtr<const UOtterInputConfig>& Entry : InputConfigs)
 	{
 		if (Entry.IsNull())
 		{
@@ -113,7 +113,7 @@ void UGameFeatureAction_AddInputBinding::HandlePawnExtension(AActor* Actor, FNam
 	{
 		RemoveInputMapping(AsPawn, ActiveData);
 	}
-	else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == ULyraHeroComponent::NAME_BindInputsNow))
+	else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == UOtterHeroComponent::NAME_BindInputsNow))
 	{
 		AddInputMappingForPlayer(AsPawn, ActiveData);
 	}
@@ -127,12 +127,12 @@ void UGameFeatureAction_AddInputBinding::AddInputMappingForPlayer(APawn* Pawn, F
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			ULyraHeroComponent* HeroComponent = Pawn->FindComponentByClass<ULyraHeroComponent>();
+			UOtterHeroComponent* HeroComponent = Pawn->FindComponentByClass<UOtterHeroComponent>();
 			if (HeroComponent && HeroComponent->IsReadyToBindInputs())
 			{
-				for (const TSoftObjectPtr<const ULyraInputConfig>& Entry : InputConfigs)
+				for (const TSoftObjectPtr<const UOtterInputConfig>& Entry : InputConfigs)
 				{
-					if (const ULyraInputConfig* BindSet = Entry.Get())
+					if (const UOtterInputConfig* BindSet = Entry.Get())
 					{
 						HeroComponent->AddAdditionalInputConfig(BindSet);
 					}
@@ -155,11 +155,11 @@ void UGameFeatureAction_AddInputBinding::RemoveInputMapping(APawn* Pawn, FPerCon
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			if (ULyraHeroComponent* HeroComponent = Pawn->FindComponentByClass<ULyraHeroComponent>())
+			if (UOtterHeroComponent* HeroComponent = Pawn->FindComponentByClass<UOtterHeroComponent>())
 			{
-				for (const TSoftObjectPtr<const ULyraInputConfig>& Entry : InputConfigs)
+				for (const TSoftObjectPtr<const UOtterInputConfig>& Entry : InputConfigs)
 				{
-					if (const ULyraInputConfig* InputConfig = Entry.Get())
+					if (const UOtterInputConfig* InputConfig = Entry.Get())
 					{
 						HeroComponent->RemoveAdditionalInputConfig(InputConfig);
 					}

@@ -8,7 +8,7 @@
 
 // Message indicating the state of a control point is changing
 USTRUCT(BlueprintType)
-struct FLyraControlPointStatusMessage
+struct FOtterControlPointStatusMessage
 {
 	GENERATED_BODY()
 

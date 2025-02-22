@@ -2,19 +2,19 @@
 
 #pragma once
 
-#include "Inventory/LyraInventoryItemDefinition.h"
+#include "Inventory/OtterInventoryItemDefinition.h"
 
 #include "InventoryFragment_ReticleConfig.generated.h"
 
-class ULyraReticleWidgetBase;
+class UOtterReticleWidgetBase;
 class UObject;
 
 UCLASS()
-class UInventoryFragment_ReticleConfig : public ULyraInventoryItemFragment
+class UInventoryFragment_ReticleConfig : public UOtterInventoryItemFragment
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Reticle)
-	TArray<TSubclassOf<ULyraReticleWidgetBase>> ReticleWidgets;
+	TArray<TSubclassOf<UOtterReticleWidgetBase>> ReticleWidgets;
 };

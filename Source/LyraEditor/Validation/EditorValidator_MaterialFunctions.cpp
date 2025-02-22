@@ -4,7 +4,7 @@
 
 #include "AssetRegistry/AssetData.h"
 #include "AssetRegistry/IAssetRegistry.h"
-#include "LyraEditor.h"
+#include "OtterEditor.h"
 #include "Materials/Material.h"
 #include "Materials/MaterialFunction.h"
 #include "Validation/EditorValidator.h"
@@ -78,7 +78,7 @@ EDataValidationResult UEditorValidator_MaterialFunctions::ValidateLoadedAsset_Im
 				{
 					if (ReferencerAssetData.AssetClassPath == UMaterial::StaticClass()->GetClassPathName())
 					{
-						UE_LOG(LogLyraEditor, Display, TEXT("    Loading referencing material %s"), *HardReferencerStr);
+						UE_LOG(LogOtterEditor, Display, TEXT("    Loading referencing material %s"), *HardReferencerStr);
 
 						TArray<FString> WarningsAndErrors;
 						if (UEditorValidator_Load::GetLoadWarningsAndErrorsForPackage(HardReferencerStr, WarningsAndErrors))

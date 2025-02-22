@@ -3,7 +3,7 @@
 #include "Replays/AsyncAction_QueryReplays.h"
 
 #include "GameFramework/PlayerController.h"
-#include "LyraReplaySubsystem.h"
+#include "OtterReplaySubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AsyncAction_QueryReplays)
 
@@ -29,7 +29,7 @@ void UAsyncAction_QueryReplays::Activate()
 {
 	ReplayStreamer = FNetworkReplayStreaming::Get().GetFactory().CreateReplayStreamer();
 
-	ResultList = NewObject<ULyraReplayList>();
+	ResultList = NewObject<UOtterReplayList>();
 	if (ReplayStreamer.IsValid())
 	{
 		FNetworkReplayVersion EnumerateStreamsVersion = FNetworkVersion::GetReplayVersion();
@@ -46,13 +46,13 @@ void UAsyncAction_QueryReplays::OnEnumerateStreamsComplete(const FEnumerateStrea
 {
 	for (const FNetworkReplayStreamInfo& StreamInfo : Result.FoundStreams)
 	{
-		ULyraReplayListEntry* NewReplayEntry = NewObject<ULyraReplayListEntry>(ResultList);
+		UOtterReplayListEntry* NewReplayEntry = NewObject<UOtterReplayListEntry>(ResultList);
 		NewReplayEntry->StreamInfo = StreamInfo;
 		ResultList->Results.Add(NewReplayEntry);
 	}
 
 	// Sort demo names by date
-	Algo::SortBy(ResultList->Results, [](const TObjectPtr<ULyraReplayListEntry>& Data) { return Data->StreamInfo.Timestamp.GetTicks(); }, TGreater<>());
+	Algo::SortBy(ResultList->Results, [](const TObjectPtr<UOtterReplayListEntry>& Data) { return Data->StreamInfo.Timestamp.GetTicks(); }, TGreater<>());
 
 	QueryComplete.Broadcast(ResultList);
 }

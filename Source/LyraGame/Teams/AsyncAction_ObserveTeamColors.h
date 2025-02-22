@@ -7,11 +7,11 @@
 
 #include "AsyncAction_ObserveTeamColors.generated.h"
 
-class ILyraTeamAgentInterface;
-class ULyraTeamDisplayAsset;
+class IOtterTeamAgentInterface;
+class UOtterTeamDisplayAsset;
 struct FFrame;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FTeamColorObservedAsyncDelegate, bool, bTeamSet, int32, TeamId, const ULyraTeamDisplayAsset*, DisplayAsset);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FTeamColorObservedAsyncDelegate, bool, bTeamSet, int32, TeamId, const UOtterTeamDisplayAsset*, DisplayAsset);
 
 /**
  * Watches for team color changes in the specified object
@@ -24,7 +24,7 @@ class UAsyncAction_ObserveTeamColors : public UCancellableAsyncAction
 public:
 	// Watches for team changes on the specified team agent
 	//  - It will will fire once immediately to give the current team assignment
-	//  - For anything that can ever belong to a team (implements ILyraTeamAgentInterface),
+	//  - For anything that can ever belong to a team (implements IOtterTeamAgentInterface),
 	//    it will also listen for team assignment changes in the future
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly="true", Keywords="Watch"))
 	static UAsyncAction_ObserveTeamColors* ObserveTeamColors(UObject* TeamAgent);
@@ -40,15 +40,15 @@ public:
 	FTeamColorObservedAsyncDelegate OnTeamChanged;
 
 private:
-	void BroadcastChange(int32 NewTeam, const ULyraTeamDisplayAsset* DisplayAsset);
+	void BroadcastChange(int32 NewTeam, const UOtterTeamDisplayAsset* DisplayAsset);
 
 	UFUNCTION()
 	void OnWatchedAgentChangedTeam(UObject* TeamAgent, int32 OldTeam, int32 NewTeam);
 
 	UFUNCTION()
-	void OnDisplayAssetChanged(const ULyraTeamDisplayAsset* DisplayAsset);
+	void OnDisplayAssetChanged(const UOtterTeamDisplayAsset* DisplayAsset);
 
-	TWeakInterfacePtr<ILyraTeamAgentInterface> TeamInterfacePtr;
+	TWeakInterfacePtr<IOtterTeamAgentInterface> TeamInterfacePtr;
 	TWeakObjectPtr<UObject> TeamInterfaceObj;
 
 	int32 LastBroadcastTeamId = INDEX_NONE;

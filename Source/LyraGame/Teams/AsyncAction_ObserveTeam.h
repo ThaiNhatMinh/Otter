@@ -8,7 +8,7 @@
 
 #include "AsyncAction_ObserveTeam.generated.h"
 
-class ILyraTeamAgentInterface;
+class IOtterTeamAgentInterface;
 struct FFrame;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTeamObservedAsyncDelegate, bool, bTeamSet, int32, TeamId);
@@ -24,7 +24,7 @@ class UAsyncAction_ObserveTeam : public UCancellableAsyncAction
 public:
 	// Watches for team changes on the specified team agent
 	//  - It will will fire once immediately to give the current team assignment
-	//  - For anything that can ever belong to a team (implements ILyraTeamAgentInterface),
+	//  - For anything that can ever belong to a team (implements IOtterTeamAgentInterface),
 	//    it will also listen for team assignment changes in the future
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly="true", Keywords="Watch"))
 	static UAsyncAction_ObserveTeam* ObserveTeam(UObject* TeamAgent);
@@ -41,11 +41,11 @@ public:
 
 private:
 	// Watches for team changes on the specified team actor
-	static UAsyncAction_ObserveTeam* InternalObserveTeamChanges(TScriptInterface<ILyraTeamAgentInterface> TeamActor);
+	static UAsyncAction_ObserveTeam* InternalObserveTeamChanges(TScriptInterface<IOtterTeamAgentInterface> TeamActor);
 
 private:
 	UFUNCTION()
 	void OnWatchedAgentChangedTeam(UObject* TeamAgent, int32 OldTeam, int32 NewTeam);
 
-	TWeakInterfacePtr<ILyraTeamAgentInterface> TeamInterfacePtr;
+	TWeakInterfacePtr<IOtterTeamAgentInterface> TeamInterfacePtr;
 };

@@ -2,7 +2,7 @@
 
 #include "SHitMarkerConfirmationWidget.h"
 
-#include "Weapons/LyraWeaponStateComponent.h"
+#include "Weapons/OtterWeaponStateComponent.h"
 
 class FPaintArgs;
 
@@ -32,10 +32,10 @@ int32 SHitMarkerConfirmationWidget::OnPaint(const FPaintArgs& Args, const FGeome
 	if (bDrawMarkers)
 	{
 		// Check if we should use screen-space damage location hit notifies
-		TArray<FLyraScreenSpaceHitLocation> LastWeaponDamageScreenLocations;
+		TArray<FOtterScreenSpaceHitLocation> LastWeaponDamageScreenLocations;
 		if (APlayerController* PC = MyContext.IsInitialized() ? MyContext.GetPlayerController() : nullptr)
 		{
-			if (ULyraWeaponStateComponent* WeaponStateComponent = PC->FindComponentByClass<ULyraWeaponStateComponent>())
+			if (UOtterWeaponStateComponent* WeaponStateComponent = PC->FindComponentByClass<UOtterWeaponStateComponent>())
 			{
 				WeaponStateComponent->GetLastWeaponDamageScreenLocations(/*out*/ LastWeaponDamageScreenLocations);
 			}
@@ -45,7 +45,7 @@ int32 SHitMarkerConfirmationWidget::OnPaint(const FPaintArgs& Args, const FGeome
 		{
 			const FVector2D HalfAbsoluteSize = AllottedGeometry.GetAbsoluteSize() * 0.5f;
 
-			for (const FLyraScreenSpaceHitLocation& Hit : LastWeaponDamageScreenLocations)
+			for (const FOtterScreenSpaceHitLocation& Hit : LastWeaponDamageScreenLocations)
 			{
 				const FSlateBrush* LocationMarkerImage = PerHitMarkerZoneOverrideImages.Find(Hit.HitZone);
 				if (LocationMarkerImage == nullptr)
@@ -93,7 +93,7 @@ void SHitMarkerConfirmationWidget::Tick(const FGeometry& AllottedGeometry, const
 
 	if (APlayerController* PC = MyContext.IsInitialized() ? MyContext.GetPlayerController() : nullptr)
 	{
-		if (ULyraWeaponStateComponent* DamageMarkerComponent = PC->FindComponentByClass<ULyraWeaponStateComponent>())
+		if (UOtterWeaponStateComponent* DamageMarkerComponent = PC->FindComponentByClass<UOtterWeaponStateComponent>())
 		{
 			const double TimeSinceLastHitNotification = DamageMarkerComponent->GetTimeSinceLastHitNotification();
 			if (TimeSinceLastHitNotification < HitNotifyDuration)

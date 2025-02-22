@@ -6,7 +6,7 @@
 #include "GameFeatures/GameFeatureAction_WorldActionBase.h"
 #include "GameFeaturesSubsystemSettings.h"
 #include "CommonUIExtensions.h"
-#include "UI/LyraHUD.h"
+#include "UI/OtterHUD.h"
 
 #if WITH_EDITOR
 #include "Misc/DataValidation.h"
@@ -14,7 +14,7 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameFeatureAction_AddWidget)
 
-#define LOCTEXT_NAMESPACE "LyraGameFeatures"
+#define LOCTEXT_NAMESPACE "OtterGameFeatures"
 
 //////////////////////////////////////////////////////////////////////
 // UGameFeatureAction_AddWidgets
@@ -33,7 +33,7 @@ void UGameFeatureAction_AddWidgets::OnGameFeatureDeactivating(FGameFeatureDeacti
 #if WITH_EDITORONLY_DATA
 void UGameFeatureAction_AddWidgets::AddAdditionalAssetBundleData(FAssetBundleData& AssetBundleData)
 {
-	for (const FLyraHUDElementEntry& Entry : Widgets)
+	for (const FOtterHUDElementEntry& Entry : Widgets)
 	{
 		AssetBundleData.AddBundleAsset(UGameFeaturesSubsystemSettings::LoadStateClient, Entry.WidgetClass.ToSoftObjectPath().GetAssetPath());
 	}
@@ -47,7 +47,7 @@ EDataValidationResult UGameFeatureAction_AddWidgets::IsDataValid(FDataValidation
 
 	{
 		int32 EntryIndex = 0;
-		for (const FLyraHUDLayoutRequest& Entry : Layout)
+		for (const FOtterHUDLayoutRequest& Entry : Layout)
 		{
 			if (Entry.LayoutClass.IsNull())
 			{
@@ -67,7 +67,7 @@ EDataValidationResult UGameFeatureAction_AddWidgets::IsDataValid(FDataValidation
 
 	{
 		int32 EntryIndex = 0;
-		for (const FLyraHUDElementEntry& Entry : Widgets)
+		for (const FOtterHUDElementEntry& Entry : Widgets)
 		{
 			if (Entry.WidgetClass.IsNull())
 			{
@@ -98,7 +98,7 @@ void UGameFeatureAction_AddWidgets::AddToWorld(const FWorldContext& WorldContext
 	{
 		if (UGameFrameworkComponentManager* ComponentManager = UGameInstance::GetSubsystem<UGameFrameworkComponentManager>(GameInstance))
 		{			
-			TSoftClassPtr<AActor> HUDActorClass = ALyraHUD::StaticClass();
+			TSoftClassPtr<AActor> HUDActorClass = AOtterHUD::StaticClass();
 
 			TSharedPtr<FComponentRequestHandle> ExtensionRequestHandle = ComponentManager->AddExtensionHandler(
 				HUDActorClass,
@@ -137,7 +137,7 @@ void UGameFeatureAction_AddWidgets::HandleActorExtension(AActor* Actor, FName Ev
 
 void UGameFeatureAction_AddWidgets::AddWidgets(AActor* Actor, FPerContextData& ActiveData)
 {
-	ALyraHUD* HUD = CastChecked<ALyraHUD>(Actor);
+	AOtterHUD* HUD = CastChecked<AOtterHUD>(Actor);
 
 	if (!HUD->GetOwningPlayerController())
 	{
@@ -148,7 +148,7 @@ void UGameFeatureAction_AddWidgets::AddWidgets(AActor* Actor, FPerContextData& A
 	{
 		FPerActorData& ActorData = ActiveData.ActorData.FindOrAdd(HUD);
 
-		for (const FLyraHUDLayoutRequest& Entry : Layout)
+		for (const FOtterHUDLayoutRequest& Entry : Layout)
 		{
 			if (TSubclassOf<UCommonActivatableWidget> ConcreteWidgetClass = Entry.LayoutClass.Get())
 			{
@@ -157,7 +157,7 @@ void UGameFeatureAction_AddWidgets::AddWidgets(AActor* Actor, FPerContextData& A
 		}
 
 		UUIExtensionSubsystem* ExtensionSubsystem = HUD->GetWorld()->GetSubsystem<UUIExtensionSubsystem>();
-		for (const FLyraHUDElementEntry& Entry : Widgets)
+		for (const FOtterHUDElementEntry& Entry : Widgets)
 		{
 			ActorData.ExtensionHandles.Add(ExtensionSubsystem->RegisterExtensionAsWidgetForContext(Entry.SlotID, LocalPlayer, Entry.WidgetClass.Get(), -1));
 		}
@@ -166,7 +166,7 @@ void UGameFeatureAction_AddWidgets::AddWidgets(AActor* Actor, FPerContextData& A
 
 void UGameFeatureAction_AddWidgets::RemoveWidgets(AActor* Actor, FPerContextData& ActiveData)
 {
-	ALyraHUD* HUD = CastChecked<ALyraHUD>(Actor);
+	AOtterHUD* HUD = CastChecked<AOtterHUD>(Actor);
 
 	// Only unregister if this is the same HUD actor that was registered, there can be multiple active at once on the client
 	FPerActorData* ActorData = ActiveData.ActorData.Find(HUD);

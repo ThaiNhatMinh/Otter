@@ -4,7 +4,7 @@
 
 #include "Engine/Engine.h"
 #include "Engine/World.h"
-#include "GameModes/LyraExperienceManagerComponent.h"
+#include "GameModes/OtterExperienceManagerComponent.h"
 #include "TimerManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AsyncAction_ExperienceReady)
@@ -61,7 +61,7 @@ void UAsyncAction_ExperienceReady::Step1_HandleGameStateSet(AGameStateBase* Game
 void UAsyncAction_ExperienceReady::Step2_ListenToExperienceLoading(AGameStateBase* GameState)
 {
 	check(GameState);
-	ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
+	UOtterExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<UOtterExperienceManagerComponent>();
 	check(ExperienceComponent);
 
 	if (ExperienceComponent->IsExperienceLoaded())
@@ -77,11 +77,11 @@ void UAsyncAction_ExperienceReady::Step2_ListenToExperienceLoading(AGameStateBas
 	}
 	else
 	{
-		ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnLyraExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::Step3_HandleExperienceLoaded));
+		ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnOtterExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::Step3_HandleExperienceLoaded));
 	}
 }
 
-void UAsyncAction_ExperienceReady::Step3_HandleExperienceLoaded(const ULyraExperienceDefinition* CurrentExperience)
+void UAsyncAction_ExperienceReady::Step3_HandleExperienceLoaded(const UOtterExperienceDefinition* CurrentExperience)
 {
 	Step4_BroadcastReady();
 }

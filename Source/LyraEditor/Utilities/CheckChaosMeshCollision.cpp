@@ -8,7 +8,7 @@
 class FOutputDevice;
 class UWorld;
 
-namespace LyraEditorUtilities
+namespace OtterEditorUtilities
 {
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,9 +72,9 @@ void CheckChaosMeshCollision(FOutputDevice& Ar)
 }
 
 FAutoConsoleCommandWithWorldArgsAndOutputDevice GCheckChaosMeshCollisionCmd(
-	TEXT("Lyra.CheckChaosMeshCollision"),
+	TEXT("Otter.CheckChaosMeshCollision"),
 	TEXT("Usage:\n")
-	TEXT("  Lyra.CheckChaosMeshCollision\n")
+	TEXT("  Otter.CheckChaosMeshCollision\n")
 	TEXT("\n")
 	TEXT("It will check Chaos collision data for all *loaded* static mesh assets for any degenerate triangles"),
 	FConsoleCommandWithWorldArgsAndOutputDeviceDelegate::CreateStatic(

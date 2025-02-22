@@ -40,7 +40,7 @@ struct ShooterTestsBaseActorNetworkTest : public TTest<Derived, AsserterType>
 		static_assert(std::is_convertible_v<NetworkActorType*, FShooterTestsActorTestHelper*>, "NetworkActorType must derive from FShooterTestsActorTestHelper");
 	}
 
-	/** Setup the test by loading in the specified level and making sure that both the server and client Lyra players are fully spawned in before continuing. */
+	/** Setup the test by loading in the specified level and making sure that both the server and client Otter players are fully spawned in before continuing. */
 	virtual void Setup() override
 	{
 		FAutomationEditorCommonUtils::LoadMap(MapName);
@@ -140,7 +140,7 @@ struct ShooterTestsActorAnimationNetworkTest : public ShooterTestsBaseActorNetwo
 	}
 
 	/**
-	 * Perform an input on the server's Lyra character.
+	 * Perform an input on the server's Otter character.
 	 *
 	 * @param Type - Type of input to be performed.
 	 */
@@ -152,7 +152,7 @@ struct ShooterTestsActorAnimationNetworkTest : public ShooterTestsBaseActorNetwo
 	}
 
 	/**
-	 * Perform an input on the client's Lyra character.
+	 * Perform an input on the client's Otter character.
 	 *
 	 * @param Type - Type of input to be performed.
 	 */
@@ -163,7 +163,7 @@ struct ShooterTestsActorAnimationNetworkTest : public ShooterTestsBaseActorNetwo
 		});
 	}
 
-	/** Stops any actively running inputs on the server's Lyra character. */
+	/** Stops any actively running inputs on the server's Otter character. */
 	void StopAllInputsOnServerPlayer()
 	{
 		Network.ThenServer(TEXT("Stopping all input actions on the local server player."), [this](FShooterTestsNetworkState<FShooterTestsActorInputTestHelper>& ServerState) {
@@ -171,7 +171,7 @@ struct ShooterTestsActorAnimationNetworkTest : public ShooterTestsBaseActorNetwo
 		});
 	}
 
-	/** Stops any actively running inputs on the client's Lyra character. */
+	/** Stops any actively running inputs on the client's Otter character. */
 	void StopAllInputsOnClientPlayer()
 	{
 		Network.ThenClient(TEXT("Stopping all input actions on the local client player."), [this](FShooterTestsNetworkState<FShooterTestsActorInputTestHelper>& ClientState) {
@@ -179,7 +179,7 @@ struct ShooterTestsActorAnimationNetworkTest : public ShooterTestsBaseActorNetwo
 		});
 	}
 
-	/** Check that the Lyra character representing the server player has the expected animation playing on all PIE sessions. */
+	/** Check that the Otter character representing the server player has the expected animation playing on all PIE sessions. */
 	void IsServerPlayerAnimationPlayingOnAllClients()
 	{
 		Network
@@ -191,7 +191,7 @@ struct ShooterTestsActorAnimationNetworkTest : public ShooterTestsBaseActorNetwo
 			});
 	}
 
-	/** Check that the Lyra character representing the client player has the expected animation playing on all PIE sessions. */
+	/** Check that the Otter character representing the client player has the expected animation playing on all PIE sessions. */
 	void IsClientPlayerAnimationPlayingOnAllClients()
 	{
 		Network

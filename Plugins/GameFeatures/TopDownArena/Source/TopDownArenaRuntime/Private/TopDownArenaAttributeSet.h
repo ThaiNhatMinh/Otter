@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "AbilitySystem/Attributes/LyraAttributeSet.h"
+#include "AbilitySystem/Attributes/OtterAttributeSet.h"
 #include "AbilitySystemComponent.h"
 
 #include "TopDownArenaAttributeSet.generated.h"
@@ -16,7 +16,7 @@ struct FFrame;
  *	Class that defines attributes specific to the top-down arena gameplay mode.
  */
 UCLASS(BlueprintType)
-class UTopDownArenaAttributeSet : public ULyraAttributeSet
+class UTopDownArenaAttributeSet : public UOtterAttributeSet
 {
 	GENERATED_BODY()
 

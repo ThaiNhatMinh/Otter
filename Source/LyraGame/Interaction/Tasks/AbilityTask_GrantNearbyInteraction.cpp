@@ -10,7 +10,7 @@
 #include "Interaction/InteractionOption.h"
 #include "Interaction/InteractionQuery.h"
 #include "Interaction/InteractionStatics.h"
-#include "Physics/LyraCollisionChannels.h"
+#include "Physics/OtterCollisionChannels.h"
 #include "TimerManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AbilityTask_GrantNearbyInteraction)
@@ -56,7 +56,7 @@ void UAbilityTask_GrantNearbyInteraction::QueryInteractables()
 		FCollisionQueryParams Params(SCENE_QUERY_STAT(UAbilityTask_GrantNearbyInteraction), false);
 
 		TArray<FOverlapResult> OverlapResults;
-		World->OverlapMultiByChannel(OUT OverlapResults, ActorOwner->GetActorLocation(), FQuat::Identity, Lyra_TraceChannel_Interaction, FCollisionShape::MakeSphere(InteractionScanRange), Params);
+		World->OverlapMultiByChannel(OUT OverlapResults, ActorOwner->GetActorLocation(), FQuat::Identity, Otter_TraceChannel_Interaction, FCollisionShape::MakeSphere(InteractionScanRange), Params);
 
 		if (OverlapResults.Num() > 0)
 		{

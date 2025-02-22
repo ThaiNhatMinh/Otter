@@ -7,7 +7,7 @@
 #include "AsyncAction_ExperienceReady.generated.h"
 
 class AGameStateBase;
-class ULyraExperienceDefinition;
+class UOtterExperienceDefinition;
 class UWorld;
 struct FFrame;
 
@@ -38,7 +38,7 @@ public:
 private:
 	void Step1_HandleGameStateSet(AGameStateBase* GameState);
 	void Step2_ListenToExperienceLoading(AGameStateBase* GameState);
-	void Step3_HandleExperienceLoaded(const ULyraExperienceDefinition* CurrentExperience);
+	void Step3_HandleExperienceLoaded(const UOtterExperienceDefinition* CurrentExperience);
 	void Step4_BroadcastReady();
 
 	TWeakObjectPtr<UWorld> WorldPtr;

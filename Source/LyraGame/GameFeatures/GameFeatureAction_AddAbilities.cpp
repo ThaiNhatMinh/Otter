@@ -3,9 +3,9 @@
 #include "GameFeatureAction_AddAbilities.h"
 #include "Engine/GameInstance.h"
 #include "Components/GameFrameworkComponentManager.h"
-#include "AbilitySystem/LyraAbilitySystemComponent.h"
+#include "AbilitySystem/OtterAbilitySystemComponent.h"
 #include "Engine/World.h"
-#include "Player/LyraPlayerState.h" //@TODO: For the fname
+#include "Player/OtterPlayerState.h" //@TODO: For the fname
 #include "GameFeatures/GameFeatureAction_WorldActionBase.h"
 
 #if WITH_EDITOR
@@ -63,7 +63,7 @@ EDataValidationResult UGameFeatureAction_AddAbilities::IsDataValid(FDataValidati
 		}
 
 		int32 AbilityIndex = 0;
-		for (const FLyraAbilityGrant& Ability : Entry.GrantedAbilities)
+		for (const FOtterAbilityGrant& Ability : Entry.GrantedAbilities)
 		{
 			if (Ability.AbilityType.IsNull())
 			{
@@ -74,7 +74,7 @@ EDataValidationResult UGameFeatureAction_AddAbilities::IsDataValid(FDataValidati
 		}
 
 		int32 AttributesIndex = 0;
-		for (const FLyraAttributeSetGrant& Attributes : Entry.GrantedAttributes)
+		for (const FOtterAttributeSetGrant& Attributes : Entry.GrantedAttributes)
 		{
 			if (Attributes.AttributeSetType.IsNull())
 			{
@@ -85,7 +85,7 @@ EDataValidationResult UGameFeatureAction_AddAbilities::IsDataValid(FDataValidati
 		}
 
 		int32 AttributeSetIndex = 0;
-		for (const TSoftObjectPtr<const ULyraAbilitySet>& AttributeSetPtr : Entry.GrantedAbilitySets)
+		for (const TSoftObjectPtr<const UOtterAbilitySet>& AttributeSetPtr : Entry.GrantedAbilitySets)
 		{
 			if (AttributeSetPtr.IsNull())
 			{
@@ -151,7 +151,7 @@ void UGameFeatureAction_AddAbilities::HandleActorExtension(AActor* Actor, FName 
 		{
 			RemoveActorAbilities(Actor, *ActiveData);
 		}
-		else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == ALyraPlayerState::NAME_LyraAbilityReady))
+		else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == AOtterPlayerState::NAME_OtterAbilityReady))
 		{
 			AddActorAbilities(Actor, Entry, *ActiveData);
 		}
@@ -179,7 +179,7 @@ void UGameFeatureAction_AddAbilities::AddActorAbilities(AActor* Actor, const FGa
 		AddedExtensions.Attributes.Reserve(AbilitiesEntry.GrantedAttributes.Num());
 		AddedExtensions.AbilitySetHandles.Reserve(AbilitiesEntry.GrantedAbilitySets.Num());
 
-		for (const FLyraAbilityGrant& Ability : AbilitiesEntry.GrantedAbilities)
+		for (const FOtterAbilityGrant& Ability : AbilitiesEntry.GrantedAbilities)
 		{
 			if (!Ability.AbilityType.IsNull())
 			{
@@ -190,7 +190,7 @@ void UGameFeatureAction_AddAbilities::AddActorAbilities(AActor* Actor, const FGa
 			}
 		}
 
-		for (const FLyraAttributeSetGrant& Attributes : AbilitiesEntry.GrantedAttributes)
+		for (const FOtterAttributeSetGrant& Attributes : AbilitiesEntry.GrantedAttributes)
 		{
 			if (!Attributes.AttributeSetType.IsNull())
 			{
@@ -213,12 +213,12 @@ void UGameFeatureAction_AddAbilities::AddActorAbilities(AActor* Actor, const FGa
 			}
 		}
 
-		ULyraAbilitySystemComponent* LyraASC = CastChecked<ULyraAbilitySystemComponent>(AbilitySystemComponent);
-		for (const TSoftObjectPtr<const ULyraAbilitySet>& SetPtr : AbilitiesEntry.GrantedAbilitySets)
+		UOtterAbilitySystemComponent* OtterASC = CastChecked<UOtterAbilitySystemComponent>(AbilitySystemComponent);
+		for (const TSoftObjectPtr<const UOtterAbilitySet>& SetPtr : AbilitiesEntry.GrantedAbilitySets)
 		{
-			if (const ULyraAbilitySet* Set = SetPtr.Get())
+			if (const UOtterAbilitySet* Set = SetPtr.Get())
 			{
-				Set->GiveToAbilitySystem(LyraASC, &AddedExtensions.AbilitySetHandles.AddDefaulted_GetRef());
+				Set->GiveToAbilitySystem(OtterASC, &AddedExtensions.AbilitySetHandles.AddDefaulted_GetRef());
 			}
 		}
 
@@ -246,10 +246,10 @@ void UGameFeatureAction_AddAbilities::RemoveActorAbilities(AActor* Actor, FPerCo
 				AbilitySystemComponent->SetRemoveAbilityOnEnd(AbilityHandle);
 			}
 
-			ULyraAbilitySystemComponent* LyraASC = CastChecked<ULyraAbilitySystemComponent>(AbilitySystemComponent);
-			for (FLyraAbilitySet_GrantedHandles& SetHandle : ActorExtensions->AbilitySetHandles)
+			UOtterAbilitySystemComponent* OtterASC = CastChecked<UOtterAbilitySystemComponent>(AbilitySystemComponent);
+			for (FOtterAbilitySet_GrantedHandles& SetHandle : ActorExtensions->AbilitySetHandles)
 			{
-				SetHandle.TakeFromAbilitySystem(LyraASC);
+				SetHandle.TakeFromAbilitySystem(OtterASC);
 			}
 		}
 

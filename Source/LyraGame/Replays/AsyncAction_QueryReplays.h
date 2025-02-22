@@ -9,12 +9,12 @@
 
 class APlayerController;
 class INetworkReplayStreamer;
-class ULyraReplayList;
+class UOtterReplayList;
 class UObject;
 struct FEnumerateStreamsResult;
 struct FFrame;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FQueryReplayAsyncDelegate, ULyraReplayList*, Results);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FQueryReplayAsyncDelegate, UOtterReplayList*, Results);
 
 /**
  * Watches for team changes in the specified player controller
@@ -43,7 +43,7 @@ private:
 
 private:
 	UPROPERTY()
-	TObjectPtr<ULyraReplayList> ResultList;
+	TObjectPtr<UOtterReplayList> ResultList;
 
 	TWeakObjectPtr<APlayerController> PlayerController;
 

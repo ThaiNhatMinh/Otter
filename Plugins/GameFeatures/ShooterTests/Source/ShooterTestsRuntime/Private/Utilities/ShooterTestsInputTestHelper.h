@@ -6,7 +6,7 @@
 #include "Misc/DateTime.h"
 
 /**
- * Input action to handle the Lyra player's crouch action.
+ * Input action to handle the Otter player's crouch action.
  * 
  * @note Crouching is handled by a button press which is a boolean value.
  */
@@ -20,7 +20,7 @@ struct FToggleCrouchTestAction : public FTestAction
 };
 
 /**
- * Input action to handle the Lyra player's melee action.
+ * Input action to handle the Otter player's melee action.
  *
  * @note Melee is handled by a button press which is a boolean value.
  */
@@ -34,7 +34,7 @@ struct FMeleeTestAction : public FTestAction
 };
 
 /**
- * Input action to handle the Lyra player's jump action.
+ * Input action to handle the Otter player's jump action.
  *
  * @note Jump is handled by a button press which is a boolean value.
  */
@@ -48,7 +48,7 @@ struct FJumpTestAction : public FTestAction
 };
 
 /**
- * Base input action to handle the Lyra player's movement.
+ * Base input action to handle the Otter player's movement.
  *
  * @note Movement is setup as a 2D axis with the X-axis handling strafing and the Y-axis handling moving forward/backward.
  * @note Derived objects below will handle movement direction along a particular axis
@@ -63,7 +63,7 @@ struct FMoveTestAction : public FTestAction
 };
 
 /**
- * Base input action to handle the Lyra player's look (rotation).
+ * Base input action to handle the Otter player's look (rotation).
  *
  * @note Rotation is setup as a 2D axis
  * @note Derived objects below will handle rotation along a particular axis
@@ -77,7 +77,7 @@ struct FLookTestAction : public FTestAction
 	}
 };
 
-/** Movement input action to move the Lyra player forward. */
+/** Movement input action to move the Otter player forward. */
 struct FMoveForwardTestAction : public FMoveTestAction
 {
 	FMoveForwardTestAction() : FMoveTestAction(FVector2D(0.0f, 1.0f))
@@ -85,7 +85,7 @@ struct FMoveForwardTestAction : public FMoveTestAction
 	}
 };
 
-/** Movement input action to move the Lyra player backward. */
+/** Movement input action to move the Otter player backward. */
 struct FMoveBackwardTestAction : public FMoveTestAction
 {
 	FMoveBackwardTestAction() : FMoveTestAction(FVector2D(0.0f, -1.0f))
@@ -93,7 +93,7 @@ struct FMoveBackwardTestAction : public FMoveTestAction
 	}
 };
 
-/** Movement input action to strafe the Lyra player to the left. */
+/** Movement input action to strafe the Otter player to the left. */
 struct FStrafeLeftTestAction : public FMoveTestAction
 {
 	FStrafeLeftTestAction() : FMoveTestAction(FVector2D(-1.0f, 0.0f))
@@ -101,7 +101,7 @@ struct FStrafeLeftTestAction : public FMoveTestAction
 	}
 };
 
-/** Movement input action to strafe the Lyra player to the right. */
+/** Movement input action to strafe the Otter player to the right. */
 struct FStrafeRightTestAction : public FMoveTestAction
 {
 	FStrafeRightTestAction() : FMoveTestAction(FVector2D(1.0f, 0.0f))
@@ -109,7 +109,7 @@ struct FStrafeRightTestAction : public FMoveTestAction
 	}
 };
 
-/** Rotation input action to rotate the Lyra player to the left. */
+/** Rotation input action to rotate the Otter player to the left. */
 struct FRotateLeftTestAction : public FLookTestAction
 {
 	FRotateLeftTestAction() : FLookTestAction(FVector2D(-1.0f, 0.0f))
@@ -117,7 +117,7 @@ struct FRotateLeftTestAction : public FLookTestAction
 	}
 };
 
-/** Rotation input action to rotate the Lyra player to the right. */
+/** Rotation input action to rotate the Otter player to the right. */
 struct FRotateRightTestAction : public FLookTestAction
 {
 	FRotateRightTestAction() : FLookTestAction(FVector2D(1.0f, 0.0f))
@@ -126,7 +126,7 @@ struct FRotateRightTestAction : public FLookTestAction
 };
 
 /**
- * Inherited InputTestAction used for testing our button and axis interactions for the Lyra player.
+ * Inherited InputTestAction used for testing our button and axis interactions for the Otter player.
  * 
  * @see FInputTestActions
  */

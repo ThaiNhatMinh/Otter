@@ -4,7 +4,7 @@
 
 #include "Engine/LocalPlayer.h"
 #include "SceneView.h"
-#include "UI/IndicatorSystem/LyraIndicatorManagerComponent.h"
+#include "UI/IndicatorSystem/OtterIndicatorManagerComponent.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(IndicatorDescriptor)
 
@@ -122,7 +122,7 @@ bool FIndicatorProjection::Project(const UIndicatorDescriptor& IndicatorDescript
 	return false;
 }
 
-void UIndicatorDescriptor::SetIndicatorManagerComponent(ULyraIndicatorManagerComponent* InManager)
+void UIndicatorDescriptor::SetIndicatorManagerComponent(UOtterIndicatorManagerComponent* InManager)
 {
 	// Make sure nobody has set this.
 	if (ensure(ManagerPtr.IsExplicitlyNull()))
@@ -133,7 +133,7 @@ void UIndicatorDescriptor::SetIndicatorManagerComponent(ULyraIndicatorManagerCom
 
 void UIndicatorDescriptor::UnregisterIndicator()
 {
-	if (ULyraIndicatorManagerComponent* Manager = ManagerPtr.Get())
+	if (UOtterIndicatorManagerComponent* Manager = ManagerPtr.Get())
 	{
 		Manager->RemoveIndicator(this);
 	}

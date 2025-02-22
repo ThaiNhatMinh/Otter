@@ -2,7 +2,7 @@
 
 #include "ApplyFrontendPerfSettingsAction.h"
 
-#include "Settings/LyraSettingsLocal.h"
+#include "Settings/OtterSettingsLocal.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(ApplyFrontendPerfSettingsAction)
 
@@ -25,7 +25,7 @@ void UApplyFrontendPerfSettingsAction::OnGameFeatureActivating(FGameFeatureActiv
 	ApplicationCounter++;
 	if (ApplicationCounter == 1)
 	{
-		ULyraSettingsLocal::Get()->SetShouldUseFrontendPerformanceSettings(true);
+		UOtterSettingsLocal::Get()->SetShouldUseFrontendPerformanceSettings(true);
 	}
 }
 
@@ -36,7 +36,7 @@ void UApplyFrontendPerfSettingsAction::OnGameFeatureDeactivating(FGameFeatureDea
 
 	if (ApplicationCounter == 0)
 	{
-		ULyraSettingsLocal::Get()->SetShouldUseFrontendPerformanceSettings(false);
+		UOtterSettingsLocal::Get()->SetShouldUseFrontendPerformanceSettings(false);
 	}
 }
 

@@ -4,16 +4,16 @@
 
 #if WITH_AUTOMATION_TESTS
 
-#include "AbilitySystem/LyraAbilitySystemComponent.h"
-#include "AbilitySystem/Attributes/LyraHealthSet.h"
-#include "Character/LyraCharacter.h"
-#include "Character/LyraHealthComponent.h"
+#include "AbilitySystem/OtterAbilitySystemComponent.h"
+#include "AbilitySystem/Attributes/OtterHealthSet.h"
+#include "Character/OtterCharacter.h"
+#include "Character/OtterHealthComponent.h"
 #include "Components/MapTestSpawner.h"
 #include "Helpers/CQTestAssetHelper.h"
-#include "LyraGameplayTags.h"
+#include "OtterGameplayTags.h"
 #include "ObjectBuilder.h"
-#include "System/LyraAssetManager.h"
-#include "System/LyraGameData.h"
+#include "System/OtterAssetManager.h"
+#include "System/OtterGameData.h"
 
 /**
  * Creates a standalone test object using the name from the first parameter, in the case `AbilitySpawnerMapTest`, which inherits from `TTest<Derived, AsserterType>` to provide us our testing functionality.
@@ -34,18 +34,18 @@ TEST_CLASS_WITH_FLAGS(AbilitySpawnerMapTest, "Project.Functional Tests.ShooterTe
 {
 	TUniquePtr<FMapTestSpawner> Spawner;
 
-	ALyraCharacter* Player{ nullptr };
+	AOtterCharacter* Player{ nullptr };
 	AActor* GameplayEffectPad{ nullptr };
-	ULyraAbilitySystemComponent* AbilitySystemComponent{ nullptr };
-	const ULyraHealthSet* HealthSet{ nullptr };
+	UOtterAbilitySystemComponent* AbilitySystemComponent{ nullptr };
+	const UOtterHealthSet* HealthSet{ nullptr };
 
 	// Fetches the GameplayEffect which will trigger and apply the damage specified to the player
 	void DoDamageToPlayer(double Damage)
 	{
-		const TSubclassOf<UGameplayEffect> DamageEffect = ULyraAssetManager::GetSubclass(ULyraGameData::Get().DamageGameplayEffect_SetByCaller);
+		const TSubclassOf<UGameplayEffect> DamageEffect = UOtterAssetManager::GetSubclass(UOtterGameData::Get().DamageGameplayEffect_SetByCaller);
 		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1.0, AbilitySystemComponent->MakeEffectContext());
 		ASSERT_THAT(IsTrue(SpecHandle.IsValid()));
-		SpecHandle.Data->SetSetByCallerMagnitude(LyraGameplayTags::SetByCaller_Damage, Damage);
+		SpecHandle.Data->SetSetByCallerMagnitude(OtterGameplayTags::SetByCaller_Damage, Damage);
 		FActiveGameplayEffectHandle Handle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 		ASSERT_THAT(IsTrue(Handle.WasSuccessfullyApplied()));
 	}
@@ -89,11 +89,11 @@ TEST_CLASS_WITH_FLAGS(AbilitySpawnerMapTest, "Project.Functional Tests.ShooterTe
 		TestCommandBuilder
 			.StartWhen([this]() { return nullptr != Spawner->FindFirstPlayerPawn(); }, LoadingScreenTimeout)
 			.Do([this]() {
-				Player = CastChecked<ALyraCharacter>(Spawner->FindFirstPlayerPawn());
-				AbilitySystemComponent = Player->GetLyraAbilitySystemComponent();
+				Player = CastChecked<AOtterCharacter>(Spawner->FindFirstPlayerPawn());
+				AbilitySystemComponent = Player->GetOtterAbilitySystemComponent();
 				ASSERT_THAT(IsNotNull(AbilitySystemComponent));
 
-				HealthSet = AbilitySystemComponent->GetSetChecked<ULyraHealthSet>();
+				HealthSet = AbilitySystemComponent->GetSetChecked<UOtterHealthSet>();
 				ASSERT_THAT(IsTrue(HealthSet->GetHealth() > 0));
 				ASSERT_THAT(IsTrue(HealthSet->GetHealth() == HealthSet->GetMaxHealth()));
 			});

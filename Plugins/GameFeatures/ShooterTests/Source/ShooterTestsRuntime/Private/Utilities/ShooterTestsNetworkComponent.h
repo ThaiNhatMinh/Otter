@@ -6,13 +6,13 @@
 
 #if ENABLE_SHOOTERTESTS_NETWORK_TEST
 
-#include "Character/LyraCharacter.h"
+#include "Character/OtterCharacter.h"
 #include "Commands/TestCommandBuilder.h"
 #include "Editor/UnrealEdEngine.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/NetConnection.h"
-#include "GameModes/LyraExperienceManagerComponent.h"
-#include "GameModes/LyraGameMode.h"
+#include "GameModes/OtterExperienceManagerComponent.h"
+#include "GameModes/OtterGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "LevelEditor.h"
 #include "Modules/ModuleManager.h"
@@ -222,7 +222,7 @@ private:
 		SessionParams.WorldType = EPlaySessionWorldType::PlayInEditor;
 		SessionParams.DestinationSlateViewport = LevelEditorModule.GetFirstActiveViewport();
 		SessionParams.EditorPlaySettings = PlaySettings;
-		SessionParams.GameModeOverride = ALyraGameMode::StaticClass();
+		SessionParams.GameModeOverride = AOtterGameMode::StaticClass();
 
 		GUnrealEd->RequestPlaySession(SessionParams);
 		GUnrealEd->StartQueuedPlaySessionRequest();
@@ -349,7 +349,7 @@ private:
 			return false;
 		}
 
-		ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
+		UOtterExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<UOtterExperienceManagerComponent>();
 		if (ExperienceComponent == nullptr)
 		{
 			return false;
@@ -430,13 +430,13 @@ private:
 	*/
 	void FetchConnectedPlayer(FShooterTestsNetworkState<NetworkActorType>& NetworkState)
 	{
-		const ALyraCharacter* RegisteredPlayer = NetworkState.LocalPlayer->GetLyraCharacter();
+		const AOtterCharacter* RegisteredPlayer = NetworkState.LocalPlayer->GetOtterCharacter();
 
 		TArray<AActor*> Pawns;
-		UGameplayStatics::GetAllActorsOfClass(NetworkState.World, ALyraCharacter::StaticClass(), Pawns);
+		UGameplayStatics::GetAllActorsOfClass(NetworkState.World, AOtterCharacter::StaticClass(), Pawns);
 		for (AActor* Pawn : Pawns)
 		{
-			ALyraCharacter* Player = Cast<ALyraCharacter>(Pawn);
+			AOtterCharacter* Player = Cast<AOtterCharacter>(Pawn);
 			if (Player == nullptr)
 			{
 				continue;
@@ -476,7 +476,7 @@ private:
 	*/
 	const int32 ClientCount{ 1 };
 
-	/** Duration to allow for the Lyra loading screen. */
+	/** Duration to allow for the Otter loading screen. */
 	const FTimespan LoadingScreenTimeout = FTimespan::FromSeconds(30);
 
 	/** Server's network state. */

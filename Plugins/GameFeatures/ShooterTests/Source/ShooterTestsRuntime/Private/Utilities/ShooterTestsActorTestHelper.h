@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "AbilitySystem/LyraAbilitySystemComponent.h"
+#include "AbilitySystem/OtterAbilitySystemComponent.h"
 #include "ShooterTestsInputTestHelper.h"
 
-class ALyraCharacter;
+class AOtterCharacter;
 class USkeletalMeshComponent;
 
-/// Class which consolidates the Lyra Actor information that is shared amongst tests.
+/// Class which consolidates the Otter Actor information that is shared amongst tests.
 class FShooterTestsActorTestHelper
 {
 public:
@@ -27,14 +27,14 @@ public:
 	bool IsPawnFullySpawned();
 
 	/**
-	* Gets the Lyra character which was associated with the Pawn used during the construction of the object.
+	* Gets the Otter character which was associated with the Pawn used during the construction of the object.
 	*
-	* @return constant pointer to the LyraCharacter
+	* @return constant pointer to the OtterCharacter
 	*/
-	const ALyraCharacter* GetLyraCharacter() const { return LyraCharacter; }
+	const AOtterCharacter* GetOtterCharacter() const { return OtterCharacter; }
 	
 	/**
-	* Gets the skeletal mesh component of the associated Lyra Character.
+	* Gets the skeletal mesh component of the associated Otter Character.
 	*
 	* @return pointer to the SkeletalMeshComponent
 	*/
@@ -42,20 +42,20 @@ public:
 
 private:
 	/** Reference to our player in the level. */
-	ALyraCharacter* LyraCharacter{ nullptr };
+	AOtterCharacter* OtterCharacter{ nullptr };
 
 	/** Reference to the player's skeletal mesh component. */
 	USkeletalMeshComponent* SkeletalMeshComponent;
 
 	/** Reference to the player's ability system component. */
-	ULyraAbilitySystemComponent* AbilitySystemComponent{ nullptr };
+	UOtterAbilitySystemComponent* AbilitySystemComponent{ nullptr };
 
 	/** Reference to the player's spawning gameplay effect. */
 	FGameplayTag GameplayCueCharacterSpawnTag;
 };
 
 /**
- * Inherited from FShooterTestsActorTestHelper, adds FShooterTestsPawnTestActions to be used for interacting with the Lyra player and triggering animations.
+ * Inherited from FShooterTestsActorTestHelper, adds FShooterTestsPawnTestActions to be used for interacting with the Otter player and triggering animations.
  *
  * @see FShooterTestsActorTestHelper
  */
@@ -77,7 +77,7 @@ public:
 	explicit FShooterTestsActorInputTestHelper(APawn* Pawn);
 
 	/** 
-	* Simulates input triggers on the Lyra character.
+	* Simulates input triggers on the Otter character.
 	* 
 	* @param Type - InputActionType used to specify which input to perform.
 	*/

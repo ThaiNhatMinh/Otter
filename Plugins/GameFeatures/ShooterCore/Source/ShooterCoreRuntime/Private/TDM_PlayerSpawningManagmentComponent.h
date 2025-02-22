@@ -2,20 +2,20 @@
 
 #pragma once
 
-#include "Player/LyraPlayerSpawningManagerComponent.h"
+#include "Player/OtterPlayerSpawningManagerComponent.h"
 
 #include "TDM_PlayerSpawningManagmentComponent.generated.h"
 
 class AActor;
 class AController;
-class ALyraPlayerStart;
+class AOtterPlayerStart;
 class UObject;
 
 /**
  * 
  */
 UCLASS()
-class UTDM_PlayerSpawningManagmentComponent : public ULyraPlayerSpawningManagerComponent
+class UTDM_PlayerSpawningManagmentComponent : public UOtterPlayerSpawningManagerComponent
 {
 	GENERATED_BODY()
 
@@ -23,7 +23,7 @@ public:
 
 	UTDM_PlayerSpawningManagmentComponent(const FObjectInitializer& ObjectInitializer);
 
-	virtual AActor* OnChoosePlayerStart(AController* Player, TArray<ALyraPlayerStart*>& PlayerStarts) override;
+	virtual AActor* OnChoosePlayerStart(AController* Player, TArray<AOtterPlayerStart*>& PlayerStarts) override;
 	virtual void OnFinishRestartPlayer(AController* Player, const FRotator& StartRotation) override;
 
 protected:

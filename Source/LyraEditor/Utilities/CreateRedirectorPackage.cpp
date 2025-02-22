@@ -13,9 +13,9 @@ class UWorld;
 //////////////////////////////////////////////////////////////////////////
 
 FAutoConsoleCommandWithWorldArgsAndOutputDevice GCreateRedirectorPackage(
-	TEXT("Lyra.CreateRedirectorPackage"),
+	TEXT("Otter.CreateRedirectorPackage"),
 	TEXT("Usage:\n")
-	TEXT("  Lyra.CreateRedirectorPackage RedirectorName TargetPackage"),
+	TEXT("  Otter.CreateRedirectorPackage RedirectorName TargetPackage"),
 	FConsoleCommandWithWorldArgsAndOutputDeviceDelegate::CreateStatic(
 		[](const TArray<FString>& Params, UWorld* World, FOutputDevice& Ar)
 {

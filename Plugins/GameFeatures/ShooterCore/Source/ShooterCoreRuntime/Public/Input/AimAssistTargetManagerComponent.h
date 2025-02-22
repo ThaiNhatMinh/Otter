@@ -15,7 +15,7 @@ struct FAimAssistOwnerViewData;
 struct FAimAssistSettings;
 struct FAimAssistTargetOptions;
 struct FCollisionQueryParams;
-struct FLyraAimAssistTarget;
+struct FOtterAimAssistTarget;
 
 /**
  * The Aim Assist Target Manager Component is used to gather all aim assist targets that are within
@@ -30,7 +30,7 @@ class SHOOTERCORERUNTIME_API UAimAssistTargetManagerComponent : public UGameStat
 public:
 
 	/** Gets all visible active targets based on the given local player and their ViewTransform */
-	void GetVisibleTargets(const FAimAssistFilter& Filter, const FAimAssistSettings& Settings, const FAimAssistOwnerViewData& OwnerData, const TArray<FLyraAimAssistTarget>& OldTargets, OUT TArray<FLyraAimAssistTarget>& OutNewTargets);
+	void GetVisibleTargets(const FAimAssistFilter& Filter, const FAimAssistSettings& Settings, const FAimAssistOwnerViewData& OwnerData, const TArray<FOtterAimAssistTarget>& OldTargets, OUT TArray<FOtterAimAssistTarget>& OutNewTargets);
 
 	/** Get a Player Controller's FOV scaled based on their current input type. */
 	static float GetFOVScale(const APlayerController* PC, ECommonInputType InputType);
@@ -47,7 +47,7 @@ protected:
 	bool DoesTargetPassFilter(const FAimAssistOwnerViewData& OwnerData, const FAimAssistFilter& Filter, const FAimAssistTargetOptions& Target, const float AcceptableRange) const;
 
 	/** Determine if the given target is visible based on our current view data. */
-	void DetermineTargetVisibility(FLyraAimAssistTarget& Target, const FAimAssistSettings& Settings, const FAimAssistFilter& Filter, const FAimAssistOwnerViewData& OwnerData);
+	void DetermineTargetVisibility(FOtterAimAssistTarget& Target, const FAimAssistSettings& Settings, const FAimAssistFilter& Filter, const FAimAssistOwnerViewData& OwnerData);
 	
 	/** Setup CollisionQueryParams to ignore a set of actors based on filter settings. Such as Ignoring Requester or Instigator. */
 	void InitTargetSelectionCollisionParams(FCollisionQueryParams& OutParams, const AActor& RequestedBy, const FAimAssistFilter& Filter) const;

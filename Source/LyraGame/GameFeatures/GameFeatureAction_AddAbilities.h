@@ -4,7 +4,7 @@
 
 #include "GameFeatureAction_WorldActionBase.h"
 #include "Abilities/GameplayAbility.h"
-#include "AbilitySystem/LyraAbilitySet.h"
+#include "AbilitySystem/OtterAbilitySet.h"
 
 #include "GameFeatureAction_AddAbilities.generated.h"
 
@@ -13,10 +13,10 @@ class UInputAction;
 class UAttributeSet;
 class UDataTable;
 struct FComponentRequestHandle;
-class ULyraAbilitySet;
+class UOtterAbilitySet;
 
 USTRUCT(BlueprintType)
-struct FLyraAbilityGrant
+struct FOtterAbilityGrant
 {
 	GENERATED_BODY()
 
@@ -30,7 +30,7 @@ struct FLyraAbilityGrant
 };
 
 USTRUCT(BlueprintType)
-struct FLyraAttributeSetGrant
+struct FOtterAttributeSetGrant
 {
 	GENERATED_BODY()
 
@@ -54,15 +54,15 @@ struct FGameFeatureAbilitiesEntry
 
 	// List of abilities to grant to actors of the specified class
 	UPROPERTY(EditAnywhere, Category="Abilities")
-	TArray<FLyraAbilityGrant> GrantedAbilities;
+	TArray<FOtterAbilityGrant> GrantedAbilities;
 
 	// List of attribute sets to grant to actors of the specified class 
 	UPROPERTY(EditAnywhere, Category="Attributes")
-	TArray<FLyraAttributeSetGrant> GrantedAttributes;
+	TArray<FOtterAttributeSetGrant> GrantedAttributes;
 
 	// List of ability sets to grant to actors of the specified class
 	UPROPERTY(EditAnywhere, Category="Attributes", meta=(AssetBundles="Client,Server"))
-	TArray<TSoftObjectPtr<const ULyraAbilitySet>> GrantedAbilitySets;
+	TArray<TSoftObjectPtr<const UOtterAbilitySet>> GrantedAbilitySets;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ private:
 	{
 		TArray<FGameplayAbilitySpecHandle> Abilities;
 		TArray<UAttributeSet*> Attributes;
-		TArray<FLyraAbilitySet_GrantedHandles> AbilitySetHandles;
+		TArray<FOtterAbilitySet_GrantedHandles> AbilitySetHandles;
 	};
 
 	struct FPerContextData

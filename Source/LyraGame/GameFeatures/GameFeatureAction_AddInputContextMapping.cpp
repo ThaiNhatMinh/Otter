@@ -9,9 +9,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameFeatures/GameFeatureAction_WorldActionBase.h"
 #include "InputMappingContext.h"
-#include "Character/LyraHeroComponent.h"
+#include "Character/OtterHeroComponent.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
-#include "System/LyraAssetManager.h"
+#include "System/OtterAssetManager.h"
 
 #if WITH_EDITOR
 #include "Misc/DataValidation.h"
@@ -89,7 +89,7 @@ void UGameFeatureAction_AddInputContextMapping::RegisterInputMappingContextsForL
 {
 	if (ensure(LocalPlayer))
 	{
-		ULyraAssetManager& AssetManager = ULyraAssetManager::Get();
+		UOtterAssetManager& AssetManager = UOtterAssetManager::Get();
 		
 		if (UEnhancedInputLocalPlayerSubsystem* EISubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer))
 		{
@@ -237,7 +237,7 @@ void UGameFeatureAction_AddInputContextMapping::HandleControllerExtension(AActor
 	{
 		RemoveInputMapping(AsController, ActiveData);
 	}
-	else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == ULyraHeroComponent::NAME_BindInputsNow))
+	else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == UOtterHeroComponent::NAME_BindInputsNow))
 	{
 		AddInputMappingForPlayer(AsController->GetLocalPlayer(), ActiveData);
 	}

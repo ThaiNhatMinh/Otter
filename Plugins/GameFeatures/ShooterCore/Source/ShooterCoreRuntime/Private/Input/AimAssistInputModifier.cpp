@@ -8,11 +8,11 @@
 #include "Engine/World.h"
 #include "EnhancedPlayerInput.h"
 #include "Input/AimAssistTargetManagerComponent.h"
-#include "Input/LyraAimSensitivityData.h"
-#include "Player/LyraLocalPlayer.h"
-#include "Player/LyraPlayerState.h"
+#include "Input/OtterAimSensitivityData.h"
+#include "Player/OtterLocalPlayer.h"
+#include "Player/OtterPlayerState.h"
 #include "SceneView.h"
-#include "Settings/LyraSettingsShared.h"
+#include "Settings/OtterSettingsShared.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AimAssistInputModifier)
 
@@ -23,7 +23,7 @@
 
 DEFINE_LOG_CATEGORY(LogAimAssist);
 
-namespace LyraConsoleVariables
+namespace OtterConsoleVariables
 {
 	static bool bEnableAimAssist = true;
 	static FAutoConsoleVariableRef CVarEnableAimAssist(
@@ -41,9 +41,9 @@ namespace LyraConsoleVariables
 }
 
 ///////////////////////////////////////////////////////////////////
-// FLyraAimAssistTarget
+// FOtterAimAssistTarget
 
-void FLyraAimAssistTarget::ResetTarget()
+void FOtterAimAssistTarget::ResetTarget()
 {
 	TargetShapeComponent = nullptr;
 
@@ -64,7 +64,7 @@ void FLyraAimAssistTarget::ResetTarget()
 	bUnderAssistOuterReticle = false;	
 }
 
-FRotator FLyraAimAssistTarget::GetRotationFromMovement(const FAimAssistOwnerViewData& OwnerInfo) const
+FRotator FOtterAimAssistTarget::GetRotationFromMovement(const FAimAssistOwnerViewData& OwnerInfo) const
 {
 	ensure(OwnerInfo.IsDataValid());
 
@@ -81,7 +81,7 @@ FRotator FLyraAimAssistTarget::GetRotationFromMovement(const FAimAssistOwnerView
 	return RotationToTarget;
 }
 
-float FLyraAimAssistTarget::CalculateRotationToTarget2D(float TargetX, float TargetY, float OffsetY) const
+float FOtterAimAssistTarget::CalculateRotationToTarget2D(float TargetX, float TargetY, float OffsetY) const
 {
 	if (TargetX <= 0.0f)
 	{
@@ -211,9 +211,9 @@ void FAimAssistOwnerViewData::UpdateViewData(const APlayerController* PC)
 	DeltaMovement = (NewLocation - OldLocation);
 
 	// Set the Team ID
-	if (ALyraPlayerState* LyraPS = PlayerController->GetPlayerState<ALyraPlayerState>())
+	if (AOtterPlayerState* OtterPS = PlayerController->GetPlayerState<AOtterPlayerState>())
 	{
-		TeamID = LyraPS->GetTeamId();
+		TeamID = OtterPS->GetTeamId();
 	}
 	else
 	{
@@ -456,7 +456,7 @@ FInputActionValue UAimAssistInputModifier::ModifyRaw_Implementation(const UEnhan
 	TRACE_CPUPROFILER_EVENT_SCOPE(UAimAssistInputModifier::ModifyRaw_Implementation);
 
 #if ENABLE_DRAW_DEBUG
-	if (LyraConsoleVariables::bDrawAimAssistDebug)
+	if (OtterConsoleVariables::bDrawAimAssistDebug)
 	{
 		if (!DebugDrawHandle.IsValid())
 		{
@@ -472,7 +472,7 @@ FInputActionValue UAimAssistInputModifier::ModifyRaw_Implementation(const UEnhan
 #endif
 
 #if !UE_BUILD_SHIPPING
-	if (!LyraConsoleVariables::bEnableAimAssist)
+	if (!OtterConsoleVariables::bEnableAimAssist)
 	{
 		return CurrentValue;
 	}
@@ -553,8 +553,8 @@ void UAimAssistInputModifier::UpdateTargetData(float DeltaTime)
 
 	// Update the targets based on what is visible
 	SwapTargetCaches();
-	const TArray<FLyraAimAssistTarget>& OldTargetCache = GetPreviousTargetCache();
-	TArray<FLyraAimAssistTarget>& NewTargetCache = GetCurrentTargetCache();
+	const TArray<FOtterAimAssistTarget>& OldTargetCache = GetPreviousTargetCache();
+	TArray<FOtterAimAssistTarget>& NewTargetCache = GetCurrentTargetCache();
 	
 	TargetManager->GetVisibleTargets(Filter, Settings, OwnerViewData, OldTargetCache, NewTargetCache);
 
@@ -563,7 +563,7 @@ void UAimAssistInputModifier::UpdateTargetData(float DeltaTime)
 	//
 	float TotalAssistWeight = 0.0f;
 
-	for (FLyraAimAssistTarget& Target : NewTargetCache)
+	for (FOtterAimAssistTarget& Target : NewTargetCache)
 	{
 		if (Target.bUnderAssistOuterReticle && Target.bIsVisible)
 		{
@@ -584,23 +584,23 @@ void UAimAssistInputModifier::UpdateTargetData(float DeltaTime)
 	// Normalize the weights.
 	if (TotalAssistWeight > 0.0f)
 	{
-		for (FLyraAimAssistTarget& Target : NewTargetCache)
+		for (FOtterAimAssistTarget& Target : NewTargetCache)
 		{
 			Target.AssistWeight = (Target.AssistWeight / TotalAssistWeight);
 		}
 	}
 }
 
-const float UAimAssistInputModifier::GetSensitivtyScalar(const ULyraSettingsShared* SharedSettings) const
+const float UAimAssistInputModifier::GetSensitivtyScalar(const UOtterSettingsShared* SharedSettings) const
 {
 	if (SharedSettings && SensitivityLevelTable)
 	{
-		const ELyraGamepadSensitivity Sens = TargetingType == ELyraTargetingType::Normal ? SharedSettings->GetGamepadLookSensitivityPreset() : SharedSettings->GetGamepadTargetingSensitivityPreset();
+		const EOtterGamepadSensitivity Sens = TargetingType == EOtterTargetingType::Normal ? SharedSettings->GetGamepadLookSensitivityPreset() : SharedSettings->GetGamepadTargetingSensitivityPreset();
 		return SensitivityLevelTable->SensitivtyEnumToFloat(Sens);
 	}
 	
 	UE_LOG(LogAimAssist, Warning, TEXT("SensitivityLevelTable is null, using default value!"));
-	return (TargetingType == ELyraTargetingType::Normal) ? 1.0f : 0.5f;	
+	return (TargetingType == EOtterTargetingType::Normal) ? 1.0f : 0.5f;	
 }
 
 FRotator UAimAssistInputModifier::UpdateRotationalVelocity(APlayerController* PC, float DeltaTime, FVector CurrentLookInputValue, FVector CurrentMoveInputValue)
@@ -611,21 +611,21 @@ FRotator UAimAssistInputModifier::UpdateRotationalVelocity(APlayerController* PC
 	float PullStrength = 0.0f;
 	float SlowStrength = 0.0f;
 	
-	const TArray<FLyraAimAssistTarget>& TargetCache = GetCurrentTargetCache();
+	const TArray<FOtterAimAssistTarget>& TargetCache = GetCurrentTargetCache();
 
 	float LookStickDeadzone = 0.25f;
 	float MoveStickDeadzone = 0.25f;
-	float SettingStrengthScalar = (TargetingType == ELyraTargetingType::Normal) ? 1.0f : 0.5f;
+	float SettingStrengthScalar = (TargetingType == EOtterTargetingType::Normal) ? 1.0f : 0.5f;
 
-	if (ULyraLocalPlayer* LP = Cast<ULyraLocalPlayer>(PC->GetLocalPlayer()))
+	if (UOtterLocalPlayer* LP = Cast<UOtterLocalPlayer>(PC->GetLocalPlayer()))
 	{
-		ULyraSettingsShared* SharedSettings = LP->GetSharedSettings();
+		UOtterSettingsShared* SharedSettings = LP->GetSharedSettings();
 		LookStickDeadzone = SharedSettings->GetGamepadLookStickDeadZone();
 		MoveStickDeadzone = SharedSettings->GetGamepadMoveStickDeadZone();
 		SettingStrengthScalar = GetSensitivtyScalar(SharedSettings);
 	}
 	
-	for (const FLyraAimAssistTarget& Target : TargetCache)
+	for (const FOtterAimAssistTarget& Target : TargetCache)
 	{
 		if (Target.bUnderAssistOuterReticle && Target.bIsVisible)
 		{
@@ -756,9 +756,9 @@ FRotator UAimAssistInputModifier::UpdateRotationalVelocity(APlayerController* PC
 	return RotationalVelocity;
 }
 
-void UAimAssistInputModifier::CalculateTargetStrengths(const FLyraAimAssistTarget& Target, float& OutPullStrength, float& OutSlowStrength) const
+void UAimAssistInputModifier::CalculateTargetStrengths(const FOtterAimAssistTarget& Target, float& OutPullStrength, float& OutSlowStrength) const
 {
-	const bool bIsADS = (TargetingType == ELyraTargetingType::ADS);
+	const bool bIsADS = (TargetingType == EOtterTargetingType::ADS);
 	
 	if (Target.bUnderAssistInnerReticle)
 	{
@@ -799,12 +799,12 @@ void UAimAssistInputModifier::CalculateTargetStrengths(const FLyraAimAssistTarge
 #if ENABLE_DRAW_DEBUG
 void UAimAssistInputModifier::AimAssistDebugDraw(UCanvas* Canvas, APlayerController* PC)
 {
-	if (!Canvas || !OwnerViewData.IsDataValid() || !LyraConsoleVariables::bDrawAimAssistDebug)
+	if (!Canvas || !OwnerViewData.IsDataValid() || !OtterConsoleVariables::bDrawAimAssistDebug)
 	{
 		return;
 	}
 
-	const bool bIsADS = (TargetingType == ELyraTargetingType::ADS);
+	const bool bIsADS = (TargetingType == EOtterTargetingType::ADS);
 	
 	FDisplayDebugManager& DisplayDebugManager = Canvas->DisplayDebugManager;
 	DisplayDebugManager.Initialize(Canvas, GEngine->GetSmallFont(), FVector2D((bIsADS ? 4.0f : 170.0f), 150.0f));
@@ -859,8 +859,8 @@ void UAimAssistInputModifier::AimAssistDebugDraw(UCanvas* Canvas, APlayerControl
 		DrawDebugCanvas2DBox(Canvas, AssistOuterReticleBounds, ReticleColor, 1.0f);
 	}
 
-	const TArray<FLyraAimAssistTarget>& TargetCache = GetCurrentTargetCache();
-	for (const FLyraAimAssistTarget& Target : TargetCache)
+	const TArray<FOtterAimAssistTarget>& TargetCache = GetCurrentTargetCache();
+	for (const FOtterAimAssistTarget& Target : TargetCache)
 	{
 		if (Target.ScreenBounds.bIsValid)
 		{

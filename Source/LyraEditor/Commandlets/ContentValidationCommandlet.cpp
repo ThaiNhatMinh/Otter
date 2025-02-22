@@ -15,7 +15,7 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(ContentValidationCommandlet)
 
-DEFINE_LOG_CATEGORY_STATIC(LogLyraContentValidation, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogOtterContentValidation, Log, Log);
 
 class FScopedContentValidationMessageGatherer : public FOutputDevice
 {
@@ -50,7 +50,7 @@ UContentValidationCommandlet::UContentValidationCommandlet(const FObjectInitiali
 
 int32 UContentValidationCommandlet::Main(const FString& FullCommandLine)
 {
-	UE_LOG(LogLyraContentValidation, Display, TEXT("Running ContentValidationCommandlet commandlet..."));
+	UE_LOG(LogOtterContentValidation, Display, TEXT("Running ContentValidationCommandlet commandlet..."));
 	
 	TArray<FString> Tokens;
 	TArray<FString> Switches;
@@ -73,7 +73,7 @@ int32 UContentValidationCommandlet::Main(const FString& FullCommandLine)
 		FString P4CmdString = TEXT("files ") + *P4FilterString;
 		if (!GetAllChangedFiles(AssetRegistry, P4CmdString, ChangedPackageNames, DeletedPackageNames, ChangedCode, ChangedOtherFiles))
 		{
-			UE_LOG(LogLyraContentValidation, Display, TEXT("ContentValidation returning 1. Failed to get changed files."));
+			UE_LOG(LogOtterContentValidation, Display, TEXT("ContentValidation returning 1. Failed to get changed files."));
 			ReturnVal = 1;
 		}
 	}
@@ -84,7 +84,7 @@ int32 UContentValidationCommandlet::Main(const FString& FullCommandLine)
 		FString P4CmdString = TEXT("opened -c ") + *P4ChangelistString;
 		if (!GetAllChangedFiles(AssetRegistry, P4CmdString, ChangedPackageNames, DeletedPackageNames, ChangedCode, ChangedOtherFiles))
 		{
-			UE_LOG(LogLyraContentValidation, Display, TEXT("ContentValidation returning 1. Failed to get changed files."));
+			UE_LOG(LogOtterContentValidation, Display, TEXT("ContentValidation returning 1. Failed to get changed files."));
 			ReturnVal = 1;
 		}
 	}
@@ -112,14 +112,14 @@ int32 UContentValidationCommandlet::Main(const FString& FullCommandLine)
 			FString P4CmdString = FString::Printf(TEXT("-c%s opened"), *Workspace);
 			if (!GetAllChangedFiles(AssetRegistry, P4CmdString, ChangedPackageNames, DeletedPackageNames, ChangedCode, ChangedOtherFiles))
 			{
-				UE_LOG(LogLyraContentValidation, Display, TEXT("ContentValidation returning 1. Failed to get changed files."));
+				UE_LOG(LogOtterContentValidation, Display, TEXT("ContentValidation returning 1. Failed to get changed files."));
 				ReturnVal = 1;
 			}
 		}
 		else
 		{
-			UE_LOG(LogLyraContentValidation, Error, TEXT("P4 workspace was not found when using P4Opened"));
-			UE_LOG(LogLyraContentValidation, Display, TEXT("ContentValidation returning 1. Workspace not found."));
+			UE_LOG(LogOtterContentValidation, Error, TEXT("P4 workspace was not found when using P4Opened"));
+			UE_LOG(LogOtterContentValidation, Display, TEXT("ContentValidation returning 1. Workspace not found."));
 			ReturnVal = 1;
 		}
 	}
@@ -191,7 +191,7 @@ bool UContentValidationCommandlet::GetAllChangedFiles(IAssetRegistry& AssetRegis
 						{
 							// Check for /Game/ assets
 							FString PostContentPath;
-							if (DepotPathName.Split(TEXT("LyraGame/Content/"), nullptr, &PostContentPath)) //@TODO: RENAME: Potential issue when modules are renamed
+							if (DepotPathName.Split(TEXT("OtterGame/Content/"), nullptr, &PostContentPath)) //@TODO: RENAME: Potential issue when modules are renamed
 							{
 								if (!PostContentPath.IsEmpty())
 								{
@@ -209,7 +209,7 @@ bool UContentValidationCommandlet::GetAllChangedFiles(IAssetRegistry& AssetRegis
 						{
 							// Check for plugin assets
 							FString PostPluginsPath;
-							if (DepotPathName.Split(TEXT("LyraGame/Plugins/"), nullptr, &PostPluginsPath))
+							if (DepotPathName.Split(TEXT("OtterGame/Plugins/"), nullptr, &PostPluginsPath))
 							{
 								const int32 ContentFolderIdx = PostPluginsPath.Find(TEXT("/Content/"));
 								if (ContentFolderIdx != INDEX_NONE)
@@ -256,16 +256,16 @@ bool UContentValidationCommandlet::GetAllChangedFiles(IAssetRegistry& AssetRegis
 					}
 					else
 					{
-						FString PostLyraGamePath;
-						if (DepotPathName.Split(TEXT("/LyraGame/"), nullptr, &PostLyraGamePath))
+						FString PostOtterGamePath;
+						if (DepotPathName.Split(TEXT("/OtterGame/"), nullptr, &PostOtterGamePath))
 						{
 							if (DepotPathName.EndsWith(TEXT(".cpp")))
 							{
-								OutChangedCode.Add(PostLyraGamePath);
+								OutChangedCode.Add(PostOtterGamePath);
 							}
 							else if (DepotPathName.EndsWith(TEXT(".h")))
 							{
-								OutChangedCode.Add(PostLyraGamePath);
+								OutChangedCode.Add(PostOtterGamePath);
 
 								FString ChangedHeaderLocalFilename = GetLocalPathFromDepotPath(DepotPathName);
 								if (!ChangedHeaderLocalFilename.IsEmpty())
@@ -275,7 +275,7 @@ bool UContentValidationCommandlet::GetAllChangedFiles(IAssetRegistry& AssetRegis
 							}
 							else
 							{
-								OutChangedOtherFiles.Add(PostLyraGamePath);
+								OutChangedOtherFiles.Add(PostOtterGamePath);
 							}
 						}
 					}
@@ -286,7 +286,7 @@ bool UContentValidationCommandlet::GetAllChangedFiles(IAssetRegistry& AssetRegis
 		}
 		else
 		{
-			UE_LOG(LogLyraContentValidation, Error, TEXT("p4 returned non-zero return code %d"), ReturnCode);
+			UE_LOG(LogOtterContentValidation, Error, TEXT("p4 returned non-zero return code %d"), ReturnCode);
 		}
 	}
 
@@ -334,7 +334,7 @@ void UContentValidationCommandlet::GetAllPackagesOfType(const FString& OfTypeStr
 		FTopLevelAssetPath TypePathName = UClass::TryConvertShortTypeNameToPathName<UStruct>(Type, ELogVerbosity::Error, TEXT("UContentValidationCommandlet"));
 		if (TypePathName.IsNull())
 		{
-			UE_LOG(LogLyraContentValidation, Error, TEXT("Failed to convert short class name \"%s\" to path name. Please use class path names."), *Type);
+			UE_LOG(LogOtterContentValidation, Error, TEXT("Failed to convert short class name \"%s\" to path name. Please use class path names."), *Type);
 		}
 		else
 		{
@@ -377,7 +377,7 @@ bool UContentValidationCommandlet::LaunchP4(const FString& Args, TArray<FString>
 	}
 	else
 	{
-		UE_LOG(LogLyraContentValidation, Error, TEXT("Failed to launch p4."));
+		UE_LOG(LogOtterContentValidation, Error, TEXT("Failed to launch p4."));
 	}
 
 	FPlatformProcess::ClosePipe(PipeRead, PipeWrite);
@@ -419,7 +419,7 @@ FString UContentValidationCommandlet::GetLocalPathFromDepotPath(const FString& D
 			}
 			else
 			{
-				UE_LOG(LogLyraContentValidation, Warning, TEXT("GetAllChangedFiles failed to run p4 'where'. WhereResults[0] = '%s'. Not adding any validation for %s"), WhereResults.Num() > 0 ? *WhereResults[0] : TEXT("Invalid"), *DepotPathName);
+				UE_LOG(LogOtterContentValidation, Warning, TEXT("GetAllChangedFiles failed to run p4 'where'. WhereResults[0] = '%s'. Not adding any validation for %s"), WhereResults.Num() > 0 ? *WhereResults[0] : TEXT("Invalid"), *DepotPathName);
 			}
 		}
 	}

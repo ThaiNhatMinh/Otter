@@ -8,16 +8,16 @@
 
 class UObject;
 
-class FLyraValidationMessageGatherer : public FOutputDevice
+class FOtterValidationMessageGatherer : public FOutputDevice
 {
 public:
-	FLyraValidationMessageGatherer()
+	FOtterValidationMessageGatherer()
 		: FOutputDevice()
 	{
 		GLog->AddOutputDevice(this);
 	}
 
-	virtual ~FLyraValidationMessageGatherer()
+	virtual ~FOtterValidationMessageGatherer()
 	{
 		GLog->RemoveOutputDevice(this);
 	}

@@ -2,7 +2,7 @@
 
 #include "IndicatorLibrary.h"
 
-#include "LyraIndicatorManagerComponent.h"
+#include "OtterIndicatorManagerComponent.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(IndicatorLibrary)
 
@@ -12,8 +12,8 @@ UIndicatorLibrary::UIndicatorLibrary()
 {
 }
 
-ULyraIndicatorManagerComponent* UIndicatorLibrary::GetIndicatorManagerComponent(AController* Controller)
+UOtterIndicatorManagerComponent* UIndicatorLibrary::GetIndicatorManagerComponent(AController* Controller)
 {
-	return ULyraIndicatorManagerComponent::GetComponent(Controller);
+	return UOtterIndicatorManagerComponent::GetComponent(Controller);
 }
 

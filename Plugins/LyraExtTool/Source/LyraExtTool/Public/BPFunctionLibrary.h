@@ -20,6 +20,6 @@ class UBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
     GENERATED_BODY()
 
-    UFUNCTION(BlueprintCallable, Category="LyraExt")
+    UFUNCTION(BlueprintCallable, Category="OtterExt")
     static bool ChangeMeshMaterials(TArray<UStaticMesh*> Mesh, UMaterialInterface* Material);
 };
