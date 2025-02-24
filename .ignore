@@ -1,0 +1,16 @@
+/.git
+/.vs
+/.vscode
+/Content
+/DerivedDataCache
+/Intermediate
+/Saved
+/Plugins/AsyncMixin/Intermediate
+/Plugins/CommonGame/Intermediate
+/Plugins/CommonLoadingScreen/Intermediate
+/Plugins/CommonUser/Intermediate
+/Plugins/GameplayMessageRouter/Intermediate
+/Plugins/GameSettings/Intermediate
+/Plugins/GameSubtitles/Intermediate
+/Plugins/ModularGameplayActors/Intermediate
+/Plugins/UIExtension/Intermediate
