@@ -5,7 +5,6 @@
 #include "AbilitySystem/Attributes/OtterAttributeSet.h"
 #include "OtterLogChannels.h"
 #include "System/OtterAssetManager.h"
-#include "System/OtterGameData.h"
 #include "OtterGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
@@ -280,10 +279,10 @@ void UOtterHealthComponent::DamageSelfDestruct(bool bFellOutOfWorld)
 {
 	if ((DeathState == EOtterDeathState::NotDead) && AbilitySystemComponent)
 	{
-		const TSubclassOf<UGameplayEffect> DamageGE = UOtterAssetManager::GetSubclass(UOtterGameData::Get().DamageGameplayEffect_SetByCaller);
+		const TSubclassOf<UGameplayEffect> DamageGE;
 		if (!DamageGE)
 		{
-			UE_LOG(LogOtter, Error, TEXT("OtterHealthComponent: DamageSelfDestruct failed for owner [%s]. Unable to find gameplay effect [%s]."), *GetNameSafe(GetOwner()), *UOtterGameData::Get().DamageGameplayEffect_SetByCaller.GetAssetName());
+			UE_LOG(LogOtter, Error, TEXT("OtterHealthComponent: DamageSelfDestruct failed for owner [%s]. Unable to find gameplay effect "), *GetNameSafe(GetOwner()));
 			return;
 		}
 

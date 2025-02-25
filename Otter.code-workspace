@@ -491,6 +491,7 @@
 				"args": [
 					"C:\\Otter\\Otter.uproject"
 				],
+				"cwd": "C:\\Program Files\\Epic Games\\UE_5.5",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",

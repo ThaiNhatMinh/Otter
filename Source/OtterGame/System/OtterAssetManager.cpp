@@ -3,7 +3,6 @@
 #include "OtterAssetManager.h"
 #include "OtterLogChannels.h"
 #include "OtterGameplayTags.h"
-#include "OtterGameData.h"
 #include "AbilitySystemGlobals.h"
 #include "Character/OtterPawnData.h"
 #include "Misc/App.h"
@@ -114,7 +113,7 @@ void UOtterAssetManager::StartInitialLoading()
 
 	{
 		// Load base game data asset
-		STARTUP_JOB_WEIGHTED(GetGameData(), 25.f);
+		// STARTUP_JOB_WEIGHTED(GetGameData(), 25.f);
 	}
 
 	// Run all the queued up startup jobs
@@ -130,11 +129,6 @@ void UOtterAssetManager::InitializeGameplayCueManager()
 	GCM->LoadAlwaysLoadedCues();
 }
 
-
-const UOtterGameData& UOtterAssetManager::GetGameData()
-{
-	return GetOrLoadTypedGameData<UOtterGameData>(OtterGameDataPath);
-}
 
 const UOtterPawnData* UOtterAssetManager::GetDefaultPawnData() const
 {
@@ -260,8 +254,6 @@ void UOtterAssetManager::PreBeginPIE(bool bStartSimulate)
 		const bool bShowCancelButton = false;
 		const bool bAllowInPIE = true;
 		SlowTask.MakeDialog(bShowCancelButton, bAllowInPIE);
-
-		const UOtterGameData& LocalGameDataCommon = GetGameData();
 
 		// Intentionally after GetGameData to avoid counting GameData time in this timer
 		SCOPE_LOG_TIME_IN_SECONDS(TEXT("PreBeginPIE asset preloading complete"), nullptr);

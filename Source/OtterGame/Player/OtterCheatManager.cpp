@@ -9,7 +9,6 @@
 #include "Engine/Console.h"
 #include "GameFramework/HUD.h"
 #include "System/OtterAssetManager.h"
-#include "System/OtterGameData.h"
 #include "OtterGameplayTags.h"
 #include "AbilitySystem/OtterAbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
@@ -178,6 +177,15 @@ bool UOtterCheatManager::InFixedCamera() const
 	return false;
 }
 
+UOtterAbilitySystemComponent* UOtterCheatManager::GetPlayerAbilitySystemComponent() const
+{
+	if (AOtterPlayerController* OtterPC = Cast<AOtterPlayerController>(GetOuterAPlayerController()))
+	{
+		return OtterPC->GetOtterAbilitySystemComponent();
+	}
+	return nullptr;
+}
+
 void UOtterCheatManager::ToggleFixedCamera()
 {
 	if (InFixedCamera())
@@ -238,189 +246,4 @@ void UOtterCheatManager::CancelActivatedAbilities()
 	}
 }
 
-void UOtterCheatManager::AddTagToSelf(FString TagName)
-{
-	FGameplayTag Tag = OtterGameplayTags::FindTagByString(TagName, true);
-	if (Tag.IsValid())
-	{
-		if (UOtterAbilitySystemComponent* OtterASC = GetPlayerAbilitySystemComponent())
-		{
-			OtterASC->AddDynamicTagGameplayEffect(Tag);
-		}
-	}
-	else
-	{
-		UE_LOG(LogOtterCheat, Display, TEXT("AddTagToSelf: Could not find any tag matching [%s]."), *TagName);
-	}
-}
-
-void UOtterCheatManager::RemoveTagFromSelf(FString TagName)
-{
-	FGameplayTag Tag = OtterGameplayTags::FindTagByString(TagName, true);
-	if (Tag.IsValid())
-	{
-		if (UOtterAbilitySystemComponent* OtterASC = GetPlayerAbilitySystemComponent())
-		{
-			OtterASC->RemoveDynamicTagGameplayEffect(Tag);
-		}
-	}
-	else
-	{
-		UE_LOG(LogOtterCheat, Display, TEXT("RemoveTagFromSelf: Could not find any tag matching [%s]."), *TagName);
-	}
-}
-
-void UOtterCheatManager::DamageSelf(float DamageAmount)
-{
-	if (UOtterAbilitySystemComponent* OtterASC = GetPlayerAbilitySystemComponent())
-	{
-		ApplySetByCallerDamage(OtterASC, DamageAmount);
-	}
-}
-
-void UOtterCheatManager::DamageTarget(float DamageAmount)
-{
-	if (AOtterPlayerController* OtterPC = Cast<AOtterPlayerController>(GetOuterAPlayerController()))
-	{
-		if (OtterPC->GetNetMode() == NM_Client)
-		{
-			// Automatically send cheat to server for convenience.
-			OtterPC->ServerCheat(FString::Printf(TEXT("DamageTarget %.2f"), DamageAmount));
-			return;
-		}
-
-		FHitResult TargetHitResult;
-		AActor* TargetActor = GetTarget(OtterPC, TargetHitResult);
-
-		if (UOtterAbilitySystemComponent* OtterTargetASC = Cast<UOtterAbilitySystemComponent>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor)))
-		{
-			ApplySetByCallerDamage(OtterTargetASC, DamageAmount);
-		}
-	}
-}
-
-void UOtterCheatManager::ApplySetByCallerDamage(UOtterAbilitySystemComponent* OtterASC, float DamageAmount)
-{
-	check(OtterASC);
-
-	TSubclassOf<UGameplayEffect> DamageGE = UOtterAssetManager::GetSubclass(UOtterGameData::Get().DamageGameplayEffect_SetByCaller);
-	FGameplayEffectSpecHandle SpecHandle = OtterASC->MakeOutgoingSpec(DamageGE, 1.0f, OtterASC->MakeEffectContext());
-
-	if (SpecHandle.IsValid())
-	{
-		SpecHandle.Data->SetSetByCallerMagnitude(OtterGameplayTags::SetByCaller_Damage, DamageAmount);
-		OtterASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-	}
-}
-
-void UOtterCheatManager::HealSelf(float HealAmount)
-{
-	if (UOtterAbilitySystemComponent* OtterASC = GetPlayerAbilitySystemComponent())
-	{
-		ApplySetByCallerHeal(OtterASC, HealAmount);
-	}
-}
-
-void UOtterCheatManager::HealTarget(float HealAmount)
-{
-	if (AOtterPlayerController* OtterPC = Cast<AOtterPlayerController>(GetOuterAPlayerController()))
-	{
-		FHitResult TargetHitResult;
-		AActor* TargetActor = GetTarget(OtterPC, TargetHitResult);
-
-		if (UOtterAbilitySystemComponent* OtterTargetASC = Cast<UOtterAbilitySystemComponent>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor)))
-		{
-			ApplySetByCallerHeal(OtterTargetASC, HealAmount);
-		}
-	}
-}
-
-void UOtterCheatManager::ApplySetByCallerHeal(UOtterAbilitySystemComponent* OtterASC, float HealAmount)
-{
-	check(OtterASC);
-
-	TSubclassOf<UGameplayEffect> HealGE = UOtterAssetManager::GetSubclass(UOtterGameData::Get().HealGameplayEffect_SetByCaller);
-	FGameplayEffectSpecHandle SpecHandle = OtterASC->MakeOutgoingSpec(HealGE, 1.0f, OtterASC->MakeEffectContext());
-
-	if (SpecHandle.IsValid())
-	{
-		SpecHandle.Data->SetSetByCallerMagnitude(OtterGameplayTags::SetByCaller_Heal, HealAmount);
-		OtterASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-	}
-}
-
-UOtterAbilitySystemComponent* UOtterCheatManager::GetPlayerAbilitySystemComponent() const
-{
-	if (AOtterPlayerController* OtterPC = Cast<AOtterPlayerController>(GetOuterAPlayerController()))
-	{
-		return OtterPC->GetOtterAbilitySystemComponent();
-	}
-	return nullptr;
-}
-
-void UOtterCheatManager::DamageSelfDestruct()
-{
-	if (AOtterPlayerController* OtterPC = Cast<AOtterPlayerController>(GetOuterAPlayerController()))
-	{
- 		if (const UOtterPawnExtensionComponent* PawnExtComp = UOtterPawnExtensionComponent::FindPawnExtensionComponent(OtterPC->GetPawn()))
-		{
-			if (PawnExtComp->HasReachedInitState(OtterGameplayTags::InitState_GameplayReady))
-			{
-				if (UOtterHealthComponent* HealthComponent = UOtterHealthComponent::FindHealthComponent(OtterPC->GetPawn()))
-				{
-					HealthComponent->DamageSelfDestruct();
-				}
-			}
-		}
-	}
-}
-
-void UOtterCheatManager::God()
-{
-	if (AOtterPlayerController* OtterPC = Cast<AOtterPlayerController>(GetOuterAPlayerController()))
-	{
-		if (OtterPC->GetNetMode() == NM_Client)
-		{
-			// Automatically send cheat to server for convenience.
-			OtterPC->ServerCheat(FString::Printf(TEXT("God")));
-			return;
-		}
-
-		if (UOtterAbilitySystemComponent* OtterASC = OtterPC->GetOtterAbilitySystemComponent())
-		{
-			const FGameplayTag Tag = OtterGameplayTags::Cheat_GodMode;
-			const bool bHasTag = OtterASC->HasMatchingGameplayTag(Tag);
-
-			if (bHasTag)
-			{
-				OtterASC->RemoveDynamicTagGameplayEffect(Tag);
-			}
-			else
-			{
-				OtterASC->AddDynamicTagGameplayEffect(Tag);
-			}
-		}
-	}
-}
-
-void UOtterCheatManager::UnlimitedHealth(int32 Enabled)
-{
-	if (UOtterAbilitySystemComponent* OtterASC = GetPlayerAbilitySystemComponent())
-	{
-		const FGameplayTag Tag = OtterGameplayTags::Cheat_UnlimitedHealth;
-		const bool bHasTag = OtterASC->HasMatchingGameplayTag(Tag);
-
-		if ((Enabled == -1) || ((Enabled > 0) && !bHasTag) || ((Enabled == 0) && bHasTag))
-		{
-			if (bHasTag)
-			{
-				OtterASC->RemoveDynamicTagGameplayEffect(Tag);
-			}
-			else
-			{
-				OtterASC->AddDynamicTagGameplayEffect(Tag);
-			}
-		}
-	}
-}
 

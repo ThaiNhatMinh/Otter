@@ -9,7 +9,6 @@
 #include "GameFramework/Pawn.h"
 #include "OtterLogChannels.h"
 #include "System/OtterAssetManager.h"
-#include "System/OtterGameData.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(OtterAbilitySystemComponent)
 
@@ -465,44 +464,6 @@ void UOtterAbilitySystemComponent::CancelActivationGroupAbilities(EOtterAbilityA
 	};
 
 	CancelAbilitiesByFunc(ShouldCancelFunc, bReplicateCancelAbility);
-}
-
-void UOtterAbilitySystemComponent::AddDynamicTagGameplayEffect(const FGameplayTag& Tag)
-{
-	const TSubclassOf<UGameplayEffect> DynamicTagGE = UOtterAssetManager::GetSubclass(UOtterGameData::Get().DynamicTagGameplayEffect);
-	if (!DynamicTagGE)
-	{
-		UE_LOG(LogOtterAbilitySystem, Warning, TEXT("AddDynamicTagGameplayEffect: Unable to find DynamicTagGameplayEffect [%s]."), *UOtterGameData::Get().DynamicTagGameplayEffect.GetAssetName());
-		return;
-	}
-
-	const FGameplayEffectSpecHandle SpecHandle = MakeOutgoingSpec(DynamicTagGE, 1.0f, MakeEffectContext());
-	FGameplayEffectSpec* Spec = SpecHandle.Data.Get();
-
-	if (!Spec)
-	{
-		UE_LOG(LogOtterAbilitySystem, Warning, TEXT("AddDynamicTagGameplayEffect: Unable to make outgoing spec for [%s]."), *GetNameSafe(DynamicTagGE));
-		return;
-	}
-
-	Spec->DynamicGrantedTags.AddTag(Tag);
-
-	ApplyGameplayEffectSpecToSelf(*Spec);
-}
-
-void UOtterAbilitySystemComponent::RemoveDynamicTagGameplayEffect(const FGameplayTag& Tag)
-{
-	const TSubclassOf<UGameplayEffect> DynamicTagGE = UOtterAssetManager::GetSubclass(UOtterGameData::Get().DynamicTagGameplayEffect);
-	if (!DynamicTagGE)
-	{
-		UE_LOG(LogOtterAbilitySystem, Warning, TEXT("RemoveDynamicTagGameplayEffect: Unable to find gameplay effect [%s]."), *UOtterGameData::Get().DynamicTagGameplayEffect.GetAssetName());
-		return;
-	}
-
-	FGameplayEffectQuery Query = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(FGameplayTagContainer(Tag));
-	Query.EffectDefinition = DynamicTagGE;
-
-	RemoveActiveEffects(Query);
 }
 
 void UOtterAbilitySystemComponent::GetAbilityTargetData(const FGameplayAbilitySpecHandle AbilityHandle, FGameplayAbilityActivationInfo ActivationInfo, FGameplayAbilityTargetDataHandle& OutTargetDataHandle)

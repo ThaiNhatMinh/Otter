@@ -9,7 +9,6 @@
 
 class UPrimaryDataAsset;
 
-class UOtterGameData;
 class UOtterPawnData;
 
 struct FOtterBundles
@@ -48,7 +47,6 @@ public:
 	// Logs all assets currently loaded and tracked by the asset manager.
 	static void DumpLoadedAssets();
 
-	const UOtterGameData& GetGameData();
 	const UOtterPawnData* GetDefaultPawnData() const;
 
 protected:
@@ -81,10 +79,6 @@ protected:
 	UPrimaryDataAsset* LoadGameDataOfClass(TSubclassOf<UPrimaryDataAsset> DataClass, const TSoftObjectPtr<UPrimaryDataAsset>& DataClassPath, FPrimaryAssetType PrimaryAssetType);
 
 protected:
-
-	// Global game data asset to use.
-	UPROPERTY(Config)
-	TSoftObjectPtr<UOtterGameData> OtterGameDataPath;
 
 	// Loaded version of the game data
 	UPROPERTY(Transient)
