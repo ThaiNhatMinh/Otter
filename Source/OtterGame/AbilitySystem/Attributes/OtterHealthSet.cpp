@@ -19,12 +19,9 @@ UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_FellOutOfWorld, "Gameplay.Damage.FellOutOfWo
 UE_DEFINE_GAMEPLAY_TAG(TAG_Otter_Damage_Message, "Otter.Damage.Message");
 
 UOtterHealthSet::UOtterHealthSet()
-	: Health(100.0f)
-	, MaxHealth(100.0f)
+	: Health(0.0f)
+	, MaxHealth(0.0f)
 {
-	bOutOfHealth = false;
-	MaxHealthBeforeAttributeChange = 0.0f;
-	HealthBeforeAttributeChange = 0.0f;
 }
 
 void UOtterHealthSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -38,31 +35,11 @@ void UOtterHealthSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 void UOtterHealthSet::OnRep_Health(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UOtterHealthSet, Health, OldValue);
-
-	// Call the change callback, but without an instigator
-	// This could be changed to an explicit RPC in the future
-	// These events on the client should not be changing attributes
-
-	const float CurrentHealth = GetHealth();
-	const float EstimatedMagnitude = CurrentHealth - OldValue.GetCurrentValue();
-	
-	OnHealthChanged.Broadcast(nullptr, nullptr, nullptr, EstimatedMagnitude, OldValue.GetCurrentValue(), CurrentHealth);
-
-	if (!bOutOfHealth && CurrentHealth <= 0.0f)
-	{
-		OnOutOfHealth.Broadcast(nullptr, nullptr, nullptr, EstimatedMagnitude, OldValue.GetCurrentValue(), CurrentHealth);
-	}
-
-	bOutOfHealth = (CurrentHealth <= 0.0f);
 }
 
 void UOtterHealthSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UOtterHealthSet, MaxHealth, OldValue);
-
-	// Call the change callback, but without an instigator
-	// This could be changed to an explicit RPC in the future
-	OnMaxHealthChanged.Broadcast(nullptr, nullptr, nullptr, GetMaxHealth() - OldValue.GetCurrentValue(), OldValue.GetCurrentValue(), GetMaxHealth());
 }
 
 bool UOtterHealthSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData &Data)
@@ -97,11 +74,6 @@ bool UOtterHealthSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData &D
 #endif // #if !UE_BUILD_SHIPPING
 		}
 	}
-
-	// Save the current health
-	HealthBeforeAttributeChange = GetHealth();
-	MaxHealthBeforeAttributeChange = GetMaxHealth();
-
 	return true;
 }
 
@@ -130,18 +102,16 @@ void UOtterHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		// Send a standardized verb message that other systems can observe
 		if (Data.EvaluatedData.Magnitude > 0.0f)
 		{
-			FOtterVerbMessage Message;
-			Message.Verb = TAG_Otter_Damage_Message;
-			Message.Instigator = Data.EffectSpec.GetEffectContext().GetEffectCauser();
-			Message.InstigatorTags = *Data.EffectSpec.CapturedSourceTags.GetAggregatedTags();
-			Message.Target = GetOwningActor();
-			Message.TargetTags = *Data.EffectSpec.CapturedTargetTags.GetAggregatedTags();
-			//@TODO: Fill out context tags, and any non-ability-system source/instigator tags
-			//@TODO: Determine if it's an opposing team kill, self-own, team kill, etc...
-			Message.Magnitude = Data.EvaluatedData.Magnitude;
+			FGameplayEventData EventData;
+			EventData.EventTag = TAG_Otter_Damage_Message;
+			EventData.EventMagnitude = Data.EvaluatedData.Magnitude;
+			EventData.Instigator = Data.EffectSpec.GetEffectContext().GetEffectCauser();
+			EventData.InstigatorTags = *Data.EffectSpec.CapturedSourceTags.GetAggregatedTags();
+			EventData.Target = GetOwningActor();
+			EventData.TargetTags = *Data.EffectSpec.CapturedTargetTags.GetAggregatedTags();
 
 			UGameplayMessageSubsystem& MessageSystem = UGameplayMessageSubsystem::Get(GetWorld());
-			MessageSystem.BroadcastMessage(Message.Verb, Message);
+			MessageSystem.BroadcastMessage(EventData.EventTag, EventData);
 		}
 
 		// Convert into -Health and then clamp
@@ -162,24 +132,9 @@ void UOtterHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	else if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
 	{
 		// TODO clamp current health?
-
+		ensureMsgf(false, TEXT("To be consider"));
 		// Notify on any requested max health changes
-		OnMaxHealthChanged.Broadcast(Instigator, Causer, &Data.EffectSpec, Data.EvaluatedData.Magnitude, MaxHealthBeforeAttributeChange, GetMaxHealth());
 	}
-
-	// If health has actually changed activate callbacks
-	if (GetHealth() != HealthBeforeAttributeChange)
-	{
-		OnHealthChanged.Broadcast(Instigator, Causer, &Data.EffectSpec, Data.EvaluatedData.Magnitude, HealthBeforeAttributeChange, GetHealth());
-	}
-
-	if ((GetHealth() <= 0.0f) && !bOutOfHealth)
-	{
-		OnOutOfHealth.Broadcast(Instigator, Causer, &Data.EffectSpec, Data.EvaluatedData.Magnitude, HealthBeforeAttributeChange, GetHealth());
-	}
-
-	// Check health again in case an event above changed it.
-	bOutOfHealth = (GetHealth() <= 0.0f);
 }
 
 void UOtterHealthSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
@@ -211,11 +166,6 @@ void UOtterHealthSet::PostAttributeChange(const FGameplayAttribute& Attribute, f
 			OtterASC->ApplyModToAttribute(GetHealthAttribute(), EGameplayModOp::Override, NewValue);
 		}
 	}
-
-	if (bOutOfHealth && (GetHealth() > 0.0f))
-	{
-		bOutOfHealth = false;
-	}
 }
 
 void UOtterHealthSet::ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const
@@ -228,7 +178,7 @@ void UOtterHealthSet::ClampAttribute(const FGameplayAttribute& Attribute, float&
 	else if (Attribute == GetMaxHealthAttribute())
 	{
 		// Do not allow max health to drop below 1.
-		NewValue = FMath::Max(NewValue, 1.0f);
+		NewValue = FMath::Max(NewValue, 0.0f);
 	}
 }
 

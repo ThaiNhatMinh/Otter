@@ -73,14 +73,7 @@ void UOtterHealthComponent::InitializeWithAbilitySystem(UOtterAbilitySystemCompo
 		return;
 	}
 
-	// Register to listen for attribute changes.
-	HealthSet->OnHealthChanged.AddUObject(this, &ThisClass::HandleHealthChanged);
-	HealthSet->OnMaxHealthChanged.AddUObject(this, &ThisClass::HandleMaxHealthChanged);
-	HealthSet->OnOutOfHealth.AddUObject(this, &ThisClass::HandleOutOfHealth);
-
 	// TEMP: Reset attributes to default values.  Eventually this will be driven by a spread sheet.
-	AbilitySystemComponent->SetNumericAttributeBase(UOtterHealthSet::GetHealthAttribute(), HealthSet->GetMaxHealth());
-
 	ClearGameplayTags();
 
 	OnHealthChanged.Broadcast(this, HealthSet->GetHealth(), HealthSet->GetHealth(), nullptr);
@@ -93,9 +86,6 @@ void UOtterHealthComponent::UninitializeFromAbilitySystem()
 
 	if (HealthSet)
 	{
-		HealthSet->OnHealthChanged.RemoveAll(this);
-		HealthSet->OnMaxHealthChanged.RemoveAll(this);
-		HealthSet->OnOutOfHealth.RemoveAll(this);
 	}
 
 	HealthSet = nullptr;
