@@ -40,7 +40,7 @@ void UOtterGameplayAbility_Interact::ActivateAbility(const FGameplayAbilitySpecH
 
 void UOtterGameplayAbility_Interact::UpdateInteractions(const TArray<FInteractionOption>& InteractiveOptions)
 {
-	if (AOtterPlayerController* PC = GetOtterPlayerControllerFromActorInfo())
+	if (auto PC = GetControllerFromActorInfo<AOtterPlayerController>())
 	{
 		if (UOtterIndicatorManagerComponent* IndicatorManager = UOtterIndicatorManagerComponent::GetComponent(PC))
 		{

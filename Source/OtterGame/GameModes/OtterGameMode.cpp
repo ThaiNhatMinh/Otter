@@ -12,7 +12,7 @@
 #include "Player/OtterPlayerController.h"
 #include "Player/OtterPlayerBotController.h"
 #include "Player/OtterPlayerState.h"
-#include "Character/OtterCharacter.h"
+#include "Character/OtterPlayerCharacter.h"
 #include "UI/OtterHUD.h"
 #include "Character/OtterPawnExtensionComponent.h"
 #include "Character/OtterPawnData.h"
@@ -38,7 +38,7 @@ AOtterGameMode::AOtterGameMode(const FObjectInitializer& ObjectInitializer)
 	PlayerControllerClass = AOtterPlayerController::StaticClass();
 	ReplaySpectatorPlayerControllerClass = AOtterReplayPlayerController::StaticClass();
 	PlayerStateClass = AOtterPlayerState::StaticClass();
-	DefaultPawnClass = AOtterCharacter::StaticClass();
+	DefaultPawnClass = AOtterPlayerCharacter::StaticClass();
 	HUDClass = AOtterHUD::StaticClass();
 }
 

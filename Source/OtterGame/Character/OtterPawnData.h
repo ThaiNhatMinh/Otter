@@ -30,7 +30,7 @@ public:
 
 public:
 
-	// Class to instantiate for this pawn (should usually derive from AOtterPawn or AOtterCharacter).
+	// Class to instantiate for this pawn (should usually derive from AOtterPawn or AOtterPlayerCharacter).
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Otter|Pawn")
 	TSubclassOf<APawn> PawnClass;
 

@@ -5,10 +5,8 @@
 #include "AbilitySystem/OtterAbilitySystemComponent.h"
 #include "AbilitySystemLog.h"
 #include "Player/OtterPlayerController.h"
-#include "Character/OtterCharacter.h"
 #include "OtterGameplayTags.h"
 #include "OtterAbilityCost.h"
-#include "Character/OtterHeroComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemGlobals.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
@@ -46,11 +44,6 @@ UOtterAbilitySystemComponent* UOtterGameplayAbility::GetOtterAbilitySystemCompon
 	return (CurrentActorInfo ? Cast<UOtterAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent.Get()) : nullptr);
 }
 
-AOtterPlayerController* UOtterGameplayAbility::GetOtterPlayerControllerFromActorInfo() const
-{
-	return (CurrentActorInfo ? Cast<AOtterPlayerController>(CurrentActorInfo->PlayerController.Get()) : nullptr);
-}
-
 AController* UOtterGameplayAbility::GetControllerFromActorInfo() const
 {
 	if (CurrentActorInfo)
@@ -79,16 +72,6 @@ AController* UOtterGameplayAbility::GetControllerFromActorInfo() const
 	}
 
 	return nullptr;
-}
-
-AOtterCharacter* UOtterGameplayAbility::GetOtterCharacterFromActorInfo() const
-{
-	return (CurrentActorInfo ? Cast<AOtterCharacter>(CurrentActorInfo->AvatarActor.Get()) : nullptr);
-}
-
-UOtterHeroComponent* UOtterGameplayAbility::GetHeroComponentFromActorInfo() const
-{
-	return (CurrentActorInfo ? UOtterHeroComponent::FindHeroComponent(CurrentActorInfo->AvatarActor.Get()) : nullptr);
 }
 
 void UOtterGameplayAbility::NativeOnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const

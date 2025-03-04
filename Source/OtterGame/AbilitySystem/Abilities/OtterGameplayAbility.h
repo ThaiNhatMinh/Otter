@@ -12,7 +12,7 @@ struct FGameplayAbilitySpecHandle;
 
 class AActor;
 class AController;
-class AOtterCharacter;
+class AOtterPlayerCharacter;
 class AOtterPlayerController;
 class APlayerController;
 class FText;
@@ -82,20 +82,16 @@ public:
 
 	UOtterGameplayAbility(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-	UFUNCTION(BlueprintCallable, Category = "Otter|Ability")
+	UFUNCTION(BlueprintPure, Category = "Otter|Ability")
 	UOtterAbilitySystemComponent* GetOtterAbilitySystemComponentFromActorInfo() const;
 
-	UFUNCTION(BlueprintCallable, Category = "Otter|Ability")
-	AOtterPlayerController* GetOtterPlayerControllerFromActorInfo() const;
-
-	UFUNCTION(BlueprintCallable, Category = "Otter|Ability")
+	UFUNCTION(BlueprintPure, Category = "Otter|Ability")
 	AController* GetControllerFromActorInfo() const;
-
-	UFUNCTION(BlueprintCallable, Category = "Otter|Ability")
-	AOtterCharacter* GetOtterCharacterFromActorInfo() const;
-
-	UFUNCTION(BlueprintCallable, Category = "Otter|Ability")
-	UOtterHeroComponent* GetHeroComponentFromActorInfo() const;
+	template<class T>
+	T* GetControllerFromActorInfo() const
+	{
+		return Cast<T>(GetControllerFromActorInfo());
+	};
 
 	EOtterAbilityActivationPolicy GetActivationPolicy() const { return ActivationPolicy; }
 	EOtterAbilityActivationGroup GetActivationGroup() const { return ActivationGroup; }

@@ -10,7 +10,7 @@ class UAbilitySystemComponent;
 class UOtterAbilitySystemComponent;
 class UObject;
 
-// AOtterCharacter typically gets the ability system component from the possessing player state
+// AOtterPlayerCharacter typically gets the ability system component from the possessing player state
 // This represents a character with a self-contained ability system component.
 UCLASS(Blueprintable)
 class OTTERGAME_API AOtterCharacterWithAbilities : public AOtterCharacter

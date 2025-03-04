@@ -2088,6 +2088,22 @@
 		"directory": "C:\\Program Files\\Epic Games\\UE_5.5\\Engine\\Source"
 	},
 	{
+		"file": "C:\\Otter\\Source\\OtterGame\\Character\\OtterPlayerCharacter.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Otter\\.vscode\\compileCommands_Otter\\OtterGame.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.5\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Otter\\Source\\OtterGame\\Character\\OtterPlayerCharacter.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Otter\\.vscode\\compileCommands_Otter\\OtterGame.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.5\\Engine\\Source"
+	},
+	{
 		"file": "C:\\Otter\\Source\\OtterGame\\Cosmetics\\OtterCharacterPartTypes.h",
 		"arguments": [
 			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
@@ -3849,22 +3865,6 @@
 	},
 	{
 		"file": "C:\\Otter\\Source\\OtterGame\\System\\OtterDevelopmentStatics.h",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
-			"@C:\\Otter\\.vscode\\compileCommands_Otter\\OtterGame.1.rsp"
-		],
-		"directory": "C:\\Program Files\\Epic Games\\UE_5.5\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Otter\\Source\\OtterGame\\System\\OtterGameData.cpp",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
-			"@C:\\Otter\\.vscode\\compileCommands_Otter\\OtterGame.1.rsp"
-		],
-		"directory": "C:\\Program Files\\Epic Games\\UE_5.5\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Otter\\Source\\OtterGame\\System\\OtterGameData.h",
 		"arguments": [
 			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
 			"@C:\\Otter\\.vscode\\compileCommands_Otter\\OtterGame.1.rsp"
