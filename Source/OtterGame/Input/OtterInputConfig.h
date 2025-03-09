@@ -17,7 +17,7 @@ struct FFrame;
  *	Struct used to map a input action to a gameplay input tag.
  */
 USTRUCT(BlueprintType)
-struct FOtterInputAction
+struct OTTERGAME_API FOtterInputAction
 {
 	GENERATED_BODY()
 
@@ -36,7 +36,7 @@ public:
  *	Non-mutable data asset that contains input configuration properties.
  */
 UCLASS(BlueprintType, Const)
-class UOtterInputConfig : public UDataAsset
+class OTTERGAME_API UOtterInputConfig : public UDataAsset
 {
 	GENERATED_BODY()
 

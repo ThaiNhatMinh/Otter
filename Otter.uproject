@@ -10,7 +10,8 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"DeveloperSettings",
-				"Engine"
+				"Engine",
+				"CommonUI"
 			]
 		},
 		{
@@ -81,6 +82,10 @@
 		},
 		{
 			"Name": "GameSubtitles",
+			"Enabled": true
+		},
+		{
+			"Name": "CoreGameplay",
 			"Enabled": true
 		}
 	]

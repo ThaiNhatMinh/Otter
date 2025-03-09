@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "OtterCharacterMovementComponent.h"
+#include "OtterGameplayTags.h"
 #include "OtterLogChannels.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/OtterPlayerController.h"
@@ -35,6 +36,7 @@ AOtterPlayerCharacter::AOtterPlayerCharacter(const FObjectInitializer& ObjectIni
 
 	CameraComponent = CreateDefaultSubobject<UOtterCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
+	CameraComponent->SetupAttachment(RootComponent);
 }
 
 void AOtterPlayerCharacter::Reset()

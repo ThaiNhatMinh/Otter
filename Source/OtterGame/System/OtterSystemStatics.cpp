@@ -8,6 +8,8 @@
 #include "OtterLogChannels.h"
 #include "Components/MeshComponent.h"
 #include "GameModes/OtterUserFacingExperienceDefinition.h"
+#include "CommonInputModeTypes.h"
+#include "Input/CommonUIActionRouterBase.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(OtterSystemStatics)
 
@@ -110,3 +112,37 @@ TArray<UActorComponent*> UOtterSystemStatics::FindComponentsByClass(AActor* Targ
 	return MoveTemp(Components);
 }
 
+void UOtterSystemStatics::SetInputMode(const APlayerController *PlayerController, ECommonInputMode CommonInputMode)
+{
+	check(PlayerController);
+
+	const ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
+	if (!LocalPlayer)
+	{
+		UE_LOG(LogOtter, Error, TEXT("Cannot SetInputMode for non-local player [%s]"), *PlayerController->GetName());
+		return;
+	}
+
+	UCommonUIActionRouterBase* ActionRouter = LocalPlayer->GetSubsystem<UCommonUIActionRouterBase>();
+	if (!ActionRouter)
+	{
+		UE_LOG(LogOtter, Error, TEXT("CommonUIActionRouter is not available, cannot SetInputMode"));
+		return;
+	}
+
+	FUIInputConfig InputConfig;
+	if (CommonInputMode == ECommonInputMode::Game)
+	{
+		// Game mode means invisible mouse, permanently captured
+		constexpr bool bHideCursorDuringViewportCapture = true;
+		InputConfig = FUIInputConfig(CommonInputMode, EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown, bHideCursorDuringViewportCapture);
+	}
+	else
+	{
+		// Menu or All modes mean visible mouse, not permanently captured
+		constexpr bool bHideCursorDuringViewportCapture = false;
+		InputConfig = FUIInputConfig(CommonInputMode, EMouseCaptureMode::CaptureDuringMouseDown, bHideCursorDuringViewportCapture);
+	}
+
+	ActionRouter->SetActiveUIInputConfig(InputConfig);
+}

@@ -39,11 +39,14 @@ void UOtterCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Des
 	CameraModeStack->EvaluateStack(DeltaTime, CameraModeView);
 
 	// Keep player controller in sync with the latest view.
-	if (APawn* TargetPawn = Cast<APawn>(GetTargetActor()))
+	if (CameraModeView.bSyncControlRotation)
 	{
-		if (APlayerController* PC = TargetPawn->GetController<APlayerController>())
+		if (APawn* TargetPawn = Cast<APawn>(GetTargetActor()))
 		{
-			PC->SetControlRotation(CameraModeView.ControlRotation);
+			if (APlayerController* PC = TargetPawn->GetController<APlayerController>())
+			{
+				PC->SetControlRotation(CameraModeView.ControlRotation);
+			}
 		}
 	}
 

@@ -8,6 +8,7 @@
 #include "OtterSystemStatics.generated.h"
 
 template <typename T> class TSubclassOf;
+enum class ECommonInputMode : uint8;
 
 class AActor;
 class UActorComponent;
@@ -46,4 +47,7 @@ public:
 	// Gets all the components that inherit from the given class
 	UFUNCTION(BlueprintCallable, Category = "Actor", meta=(DefaultToSelf="TargetActor", ComponentClass="/Script/Engine.ActorComponent", DeterminesOutputType="ComponentClass"))
 	static TArray<UActorComponent*> FindComponentsByClass(AActor* TargetActor, TSubclassOf<UActorComponent> ComponentClass, bool bIncludeChildActors = true);
+
+	UFUNCTION(BlueprintCallable)
+	static void SetInputMode(const APlayerController* PlayerController, ECommonInputMode CommonInputMode);
 };

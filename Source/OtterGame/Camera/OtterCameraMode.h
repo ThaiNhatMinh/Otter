@@ -52,6 +52,7 @@ public:
 
 	FVector Location;
 	FRotator Rotation;
+	bool bSyncControlRotation = false;
 	FRotator ControlRotation;
 	float FieldOfView;
 };

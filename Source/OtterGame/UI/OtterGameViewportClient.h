@@ -18,4 +18,5 @@ public:
 	UOtterGameViewportClient();
 
 	virtual void Init(struct FWorldContext& WorldContext, UGameInstance* OwningGameInstance, bool bCreateNewAudioDevice = true) override;
+	virtual void MouseMove(FViewport* Viewport,int32 X,int32 Y);
 };

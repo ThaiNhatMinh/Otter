@@ -25,7 +25,7 @@ DECLARE_DELEGATE_RetVal(TSubclassOf<UOtterCameraMode>, FOtterCameraModeDelegate)
  *	The base camera component class used by this project.
  */
 UCLASS()
-class UOtterCameraComponent : public UCameraComponent
+class OTTERGAME_API UOtterCameraComponent : public UCameraComponent
 {
 	GENERATED_BODY()
 

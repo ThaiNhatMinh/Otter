@@ -28,3 +28,8 @@ void UOtterGameViewportClient::Init(struct FWorldContext& WorldContext, UGameIns
 	const bool UseHardwareCursor = ICommonUIModule::GetSettings().GetPlatformTraits().HasTag(GameViewportTags::TAG_Platform_Trait_Input_HardwareCursor);
 	SetUseSoftwareCursorWidgets(!UseHardwareCursor);
 }
+
+void UOtterGameViewportClient::MouseMove(FViewport *InViewport, int32 X, int32 Y)
+{
+	Super::MouseMove(InViewport, X, Y);
+}

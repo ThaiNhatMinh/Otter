@@ -9,7 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameFeatures/GameFeatureAction_WorldActionBase.h"
 #include "InputMappingContext.h"
-#include "Character/OtterHeroComponent.h"
+#include "Character/OtterHeroComponentBase.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
 #include "System/OtterAssetManager.h"
 
@@ -237,7 +237,7 @@ void UGameFeatureAction_AddInputContextMapping::HandleControllerExtension(AActor
 	{
 		RemoveInputMapping(AsController, ActiveData);
 	}
-	else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == UOtterHeroComponent::NAME_BindInputsNow))
+	else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == UOtterHeroComponentBase::NAME_BindInputsNow))
 	{
 		AddInputMappingForPlayer(AsController->GetLocalPlayer(), ActiveData);
 	}

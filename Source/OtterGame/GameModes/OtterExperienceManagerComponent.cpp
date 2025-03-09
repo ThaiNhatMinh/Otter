@@ -58,7 +58,8 @@ void UOtterExperienceManagerComponent::SetCurrentExperience(FPrimaryAssetId Expe
 	UOtterAssetManager& AssetManager = UOtterAssetManager::Get();
 	FSoftObjectPath AssetPath = AssetManager.GetPrimaryAssetPath(ExperienceId);
 	TSubclassOf<UOtterExperienceDefinition> AssetClass = Cast<UClass>(AssetPath.TryLoad());
-	check(AssetClass);
+	if (!ensure(AssetClass))
+		return;
 	const UOtterExperienceDefinition* Experience = GetDefault<UOtterExperienceDefinition>(AssetClass);
 
 	check(Experience != nullptr);

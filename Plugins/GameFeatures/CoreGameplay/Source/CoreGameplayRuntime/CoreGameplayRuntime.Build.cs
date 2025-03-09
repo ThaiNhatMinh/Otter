@@ -26,6 +26,9 @@ public class CoreGameplayRuntime : ModuleRules
 			new string[]
 			{
 				"Core",
+				"OtterGame",
+				"ModularGameplay",
+				"EnhancedInput"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

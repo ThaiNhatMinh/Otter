@@ -8,7 +8,7 @@
 #include "GameFramework/Pawn.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
-#include "Character/OtterHeroComponent.h"
+#include "Character/OtterHeroComponentBase.h"
 #include "GameFeatures/GameFeatureAction_WorldActionBase.h"
 #include "Input/OtterInputConfig.h"
 
@@ -113,7 +113,7 @@ void UGameFeatureAction_AddInputBinding::HandlePawnExtension(AActor* Actor, FNam
 	{
 		RemoveInputMapping(AsPawn, ActiveData);
 	}
-	else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == UOtterHeroComponent::NAME_BindInputsNow))
+	else if ((EventName == UGameFrameworkComponentManager::NAME_ExtensionAdded) || (EventName == UOtterHeroComponentBase::NAME_BindInputsNow))
 	{
 		AddInputMappingForPlayer(AsPawn, ActiveData);
 	}
@@ -127,7 +127,7 @@ void UGameFeatureAction_AddInputBinding::AddInputMappingForPlayer(APawn* Pawn, F
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			UOtterHeroComponent* HeroComponent = Pawn->FindComponentByClass<UOtterHeroComponent>();
+			UOtterHeroComponentBase* HeroComponent = Pawn->FindComponentByClass<UOtterHeroComponentBase>();
 			if (HeroComponent && HeroComponent->IsReadyToBindInputs())
 			{
 				for (const TSoftObjectPtr<const UOtterInputConfig>& Entry : InputConfigs)
@@ -155,7 +155,7 @@ void UGameFeatureAction_AddInputBinding::RemoveInputMapping(APawn* Pawn, FPerCon
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			if (UOtterHeroComponent* HeroComponent = Pawn->FindComponentByClass<UOtterHeroComponent>())
+			if (UOtterHeroComponentBase* HeroComponent = Pawn->FindComponentByClass<UOtterHeroComponentBase>())
 			{
 				for (const TSoftObjectPtr<const UOtterInputConfig>& Entry : InputConfigs)
 				{
