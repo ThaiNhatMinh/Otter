@@ -28,7 +28,9 @@ public class CoreGameplayRuntime : ModuleRules
 				"Core",
 				"OtterGame",
 				"ModularGameplay",
-				"EnhancedInput"
+				"GameplayTags",
+				"EnhancedInput",
+				"UMG"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
